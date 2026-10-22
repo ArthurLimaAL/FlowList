@@ -11,17 +11,23 @@ function createMainWindow() {
         width: 1000,
         height: 600,
         resizable: false,
-        autoHideMenuBar: true
+        autoHideMenuBar: true,
+        webPreferences: {
+            nodeIntegration: true,
+            contextIsolation: false
+        }
     });
 
     const startUrl = url.format({
-
-        pathname: path.join(__dirname, 'index.html'),
+        pathname: path.join(__dirname, 'tela.html'),
         protocol: 'file',
-    })
+    });
 
     mainWindow.loadURL(startUrl);
-
-}
+};
 
 app.whenReady().then(createMainWindow);
+
+app.on('window-all-closed', () => {
+    if (process.platform !== 'darwin') app.quit();
+});

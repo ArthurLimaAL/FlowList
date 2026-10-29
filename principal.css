@@ -1,0 +1,162 @@
+        :root {
+            --bg: #0f111a;
+            --card: #1f2332;
+            --card-hover: #252a3d;
+            --border: rgba(255, 255, 255, 0.06);
+            --text: #e8eaf0;
+            --muted: #8b90a3;
+            --blue: #8bc4ff;
+            --blue-hover: #a3d2ff;
+        }
+
+        body {
+            background: var(--bg);
+            color: var(--text);
+            font-family: Inter, system-ui, sans-serif;
+        }
+
+        .container-tasks {
+            max-width: 780px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+
+        .btn-new {
+            background: var(--blue);
+            color: #0f111a;
+            border: none;
+            border-radius: 12px;
+            font-weight: 600;
+            padding: 9px 18px;
+            display: flex;
+            gap: 8px;
+        }
+
+        .btn-new:hover {
+            background: var(--blue-hover);
+        }
+
+        .filters .btn {
+            border-radius: 999px;
+            font-size: 13px;
+            padding: 6px 14px;
+            border: none;
+        }
+
+        .btn-filter-active {
+            background: var(--blue) !important;
+            color: #0f111a !important;
+        }
+
+        .btn-filter-inactive {
+            background: #232736;
+            color: var(--muted);
+        }
+
+        .task-card {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 18px;
+            overflow: hidden;
+        }
+
+        .task-item {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            padding: 16px 18px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .task-item:hover {
+            background: var(--card-hover);
+        }
+
+        .check-circle {
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            border: 2px solid #3a3f57;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: transparent;
+            cursor: pointer;
+        }
+
+        .check-circle.done {
+            background: var(--blue);
+            border-color: var(--blue);
+            color: #0f111a;
+        }
+
+        .task-title {
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        .task-title.done {
+            text-decoration: line-through;
+            color: var(--muted);
+        }
+
+        .badge-prio {
+            font-size: 11px;
+            font-weight: 600;
+            padding: 4px 10px;
+            border-radius: 999px;
+        }
+
+        .badge-alta {
+            background: #3d222a;
+            color: #ff8a9b;
+        }
+
+        .badge-media {
+            background: #3a3320;
+            color: #ffce6b;
+        }
+
+        .badge-baixa {
+            background: #1f3328;
+            color: #6fdc8c;
+        }
+
+        .icon-btn {
+            width: 30px;
+            height: 30px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: transparent;
+            border: none;
+            color: #6a7088;
+        }
+
+        .empty-state {
+            padding: 64px 20px;
+            text-align: center;
+        }
+
+        .empty-state i {
+            font-size: 48px;
+            color: #2e344d;
+            display: block;
+            margin-bottom: 12px;
+        }
+
+        .modal-content {
+            background: #1e2232;
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            color: var(--text);
+        }
+
+        .form-control,
+        .form-select {
+            background: #171a27;
+            border: 1px solid #2a2f44;
+            color: var(--text);
+            border-radius: 10px;
+        }

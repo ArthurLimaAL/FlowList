@@ -1,148 +1,110 @@
-let tarefas = [];
+let tasks = [], filter = 'todas', editingId = null;
 
-const inputTarefa = document.getElementById('input-tarefa');
-const btnAdicionar = document.getElementById('btn-adicionar');
-const dataAtual = document.getElementById('data-atual');
-const mensagemVazia = document.getElementById('mensagem-vazia');
+// Declarar variáveis globais corretamente
+const modalTitle = document.getElementById('modalTitle');
+const inputTitulo = document.getElementById('inputTitulo');
+const inputPrioridade = document.getElementById('inputPrioridade');
+const taskModal = document.getElementById('taskModal');
 
-const countAll = document.getElementById('count-all');
-const countTodo = document.getElementById('count-todo');
-const countDone = document.getElementById('count-done');
-
-function configurarData() {
-    const hoje = new Date().toLocaleDateString('pt-BR');
-    dataAtual.textContent = hoje;
+function setFilter(f) {
+    filter = f;
+    document.querySelectorAll('.filters .btn').forEach(b => b.className = 'btn btn-filter-inactive');
+    document.getElementById('f-' + f).className = 'btn btn-filter-active';
+    render();
 }
 
-function gerarId() {
-    return Date.now().toString(36) + Math.random().toString(36).substr(2);
-}
+function render() {
+    document.getElementById('contador').textContent = `${tasks.length} ${tasks.length === 1 ? 'tarefa' : 'tarefas'} · ${tasks.filter(t => t.done).length} concluídas`;
 
-function adicionarTarefa() {
-    const texto = inputTarefa.value.trim();
+    let list = tasks;
+    if (filter === 'pendentes') list = tasks.filter(t => !t.done);
+    if (filter === 'concluidas') list = tasks.filter(t => t.done);
 
-    if (texto === '') {
-        inputTarefa.classList.add('is-invalid');
-        setTimeout(() => inputTarefa.classList.remove('is-invalid'), 2000);
+    const c = document.getElementById('taskContainer');
+
+    if (!list.length) {
+        c.innerHTML = `<div class="empty-state"><i class="bi bi-inbox"></i><div class="fw-semibold">Nenhuma tarefa por aqui</div><div style="color:var(--muted);font-size:14px">Clique em Nova tarefa para começar</div></div>`;
         return;
     }
 
-    const tarefa = {
-        id: gerarId(),
-        texto: texto,
-        concluida: false,
-        dataCriacao: new Date()
-    };
-
-    tarefas.push(tarefa);
-    inputTarefa.value = '';
-    renderizarTarefas();
-    salvarTarefas();
+    c.innerHTML = list.map(t => `<div class="task-item">
+    <button class="check-circle ${t.done ? 'done' : ''}" onclick="toggle(${t.id})">${t.done ? '<i class="bi bi-check-lg"></i>' : ''}</button>
+    <div class="flex-grow-1"><div class="task-title ${t.done ? 'done' : ''}">${t.titulo}</div></div>
+    <span class="badge-prio badge-${t.prioridade === 'Alta' ? 'alta' : t.prioridade === 'Média' ? 'media' : 'baixa'}">${t.prioridade}</span>
+    <button class="icon-btn" onclick="openEdit(${t.id})"><i class="bi bi-pencil"></i></button>
+    <button class="icon-btn" onclick="removeTask(${t.id})"><i class="bi bi-trash"></i></button>
+  </div>`).join('');
 }
 
-function alternarTarefa(id) {
-    const tarefa = tarefas.find(t => t.id === id);
-    if (tarefa) {
-        tarefa.concluida = !tarefa.concluida;
-        renderizarTarefas();
-        salvarTarefas();
-    }
+function openNew() {
+    editingId = null;
+    modalTitle.textContent = 'Nova tarefa';
+    inputTitulo.value = '';
+    inputPrioridade.value = 'Média';
+    showModal();
 }
 
-function deletarTarefa(id) {
-    if (confirm('Deseja realmente excluir esta tarefa?')) {
-        tarefas = tarefas.filter(t => t.id !== id);
-        renderizarTarefas();
-        salvarTarefas();
-    }
+function openEdit(id) {
+    const t = tasks.find(x => x.id === id);
+    if (!t) return;
+
+    editingId = id;
+    modalTitle.textContent = 'Editar tarefa';
+    inputTitulo.value = t.titulo;
+    inputPrioridade.value = t.prioridade;
+    
+    showModal();
 }
 
-function criarElementoTarefa(tarefa) {
-    const div = document.createElement('div');
-    div.className = `list-group-item list-group-item-action d-flex align-items-center ${tarefa.concluida ? 'task-concluida' : ''}`;
-
-    div.innerHTML = `
-        <div class="form-check flex-grow-1">
-            <input class="form-check-input" type="checkbox" 
-                   ${tarefa.concluida ? 'checked' : ''} 
-                   onchange="alternarTarefa('${tarefa.id}')"
-                   id="check-${tarefa.id}">
-            <label class="form-check-label ms-2 flex-grow-1" for="check-${tarefa.id}">
-                ${tarefa.texto}
-            </label>
-        </div>
-        <button class="btn btn-sm btn-outline-danger ms-2" onclick="deletarTarefa('${tarefa.id}')">
-           <p>x</p>
-        </button>
-    `;
-
-    return div;
+function showModal() {
+    taskModal.classList.add('show');
+    // Focar no input automaticamente
+    setTimeout(() => inputTitulo.focus(), 100);
 }
 
-function renderizarTarefas() {
-    const listaAll = document.getElementById('lista-all');
-    const listaTodo = document.getElementById('lista-todo');
-    const listaDone = document.getElementById('lista-done');
+function closeModal() {
+    taskModal.classList.remove('show');
+    editingId = null;
+}
 
-    listaAll.innerHTML = '';
-    listaTodo.innerHTML = '';
-    listaDone.innerHTML = '';
+function saveTask() {
+    const titulo = inputTitulo.value.trim();
+    if (!titulo) return alert('Digite um título');
+    const prioridade = inputPrioridade.value;
 
-    let countAllValue = 0;
-    let countTodoValue = 0;
-    let countDoneValue = 0;
-
-    tarefas.forEach(tarefa => {
-        countAllValue++;
-
-        if (tarefa.concluida) {
-            countDoneValue++;
-            listaDone.appendChild(criarElementoTarefa(tarefa));
-        } else {
-            countTodoValue++;
-            listaTodo.appendChild(criarElementoTarefa(tarefa));
+    if (editingId !== null) {
+        const t = tasks.find(x => x.id === editingId);
+        if (t) {
+            t.titulo = titulo;
+            t.prioridade = prioridade;
         }
-
-        listaAll.appendChild(criarElementoTarefa(tarefa));
-    });
-
-    countAll.textContent = countAllValue;
-    countTodo.textContent = countTodoValue;
-    countDone.textContent = countDoneValue;
-
-    if (tarefas.length === 0) {
-        mensagemVazia.classList.add('mostrar');
     } else {
-        mensagemVazia.classList.remove('mostrar');
+        tasks.unshift({ id: Date.now(), titulo, prioridade, done: false });
+    }
+
+    closeModal();
+    render();
+}
+
+function toggle(id) {
+    const t = tasks.find(x => x.id === id);
+    if (t) {
+        t.done = !t.done;
+        render();
     }
 }
 
-function salvarTarefas() {
-    localStorage.setItem('tarefas', JSON.stringify(tarefas));
+function removeTask(id) {
+    if (!confirm('Excluir?')) return;
+    tasks = tasks.filter(x => x.id !== id);
+    render();
 }
 
-function carregarTarefas() {
-    const tarefasSalvas = localStorage.getItem('tarefas');
-    if (tarefasSalvas) {
-        tarefas = JSON.parse(tarefasSalvas);
-        renderizarTarefas();
-    }
-}
-
-btnAdicionar.addEventListener('click', adicionarTarefa);
-
-inputTarefa.addEventListener('keypress', (e) => {
-    if (e.key === 'Enter') {
-        adicionarTarefa();
+// Fechar modal com tecla ESC
+document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') {
+        closeModal();
     }
 });
 
-document.addEventListener('DOMContentLoaded', () => {
-    configurarData();
-    carregarTarefas();
-
-    inputTarefa.focus();
-});
-
-window.alternarTarefa = alternarTarefa;
-window.deletarTarefa = deletarTarefa;
+render();

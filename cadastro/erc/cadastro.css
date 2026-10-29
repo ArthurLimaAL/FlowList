@@ -131,3 +131,57 @@ body {
   color: var(--texto-suave);
   margin: 0 0 22px 0;
 }
+/* CAMPOS (sobrescrevem o visual padrão do Bootstrap) */
+.campo {
+  margin-bottom: 16px;
+}
+
+.form-label {
+  font-size: 13px;
+  font-weight: 400;
+  color: var(--texto-suave);
+  margin-bottom: 6px;
+}
+
+.form-control {
+  height: 44px;
+  padding: 0 14px;
+  font-size: 15px;
+  color: var(--texto);
+  background-color: var(--fundo-campo);
+  border: 1px solid var(--borda);
+  border-radius: 10px;
+}
+
+/* Campo em foco (clicado) */
+.form-control:focus {
+  color: var(--texto);
+  background-color: var(--fundo-campo);
+  border-color: var(--azul);
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.25);
+}
+
+/* Impede o navegador de pintar o campo de branco/amarelo
+   quando usa o preenchimento automático */
+.form-control:-webkit-autofill {
+  -webkit-text-fill-color: var(--texto);
+  -webkit-box-shadow: 0 0 0 1000px var(--fundo-campo) inset;
+  caret-color: var(--texto);
+}
+
+/* Mensagem de erro embaixo do campo. */
+.error {
+  display: block;
+  margin-top: 5px;
+  font-size: 13px;
+  color: var(--erro);
+}
+
+.error:empty {
+  display: none;
+}
+
+/* CAMPO DE SENHA + OLHO */
+.campo-senha {
+  position: relative;
+}

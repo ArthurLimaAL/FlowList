@@ -1,0 +1,76 @@
+:root {
+  --fundo-pagina: #0a0b0f;      
+  --fundo-esquerdo: #1b1e27;   
+  --fundo-direito: #15171f;    
+  --fundo-campo: #15171f;       
+
+  --borda: #2c2f3a;             
+  --barra-topo: #232733;        
+  --borda-barra: #3a3f4e;       
+
+  --azul: #3b82f6;              
+  --azul-hover: #2563eb;       
+  --azul-claro: #93c5fd;        
+
+  --texto: #ffffff;             
+  --texto-suave: #ffffff;       
+                                  
+  --erro: #f87171;              
+}
+
+/* BASE (Usando o Bootstrap) */
+body {
+  font-family: 'Inter', sans-serif;
+  background-color: var(--fundo-pagina);
+  color: var(--texto);
+  min-height: 100vh;
+  padding: 33px 5px 5px 5px;
+  display: flex;
+}
+
+/* FAIXA DO TOPO */
+.barra-topo {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 33px;
+  background-color: var(--barra-topo);
+  border-bottom: 1px solid var(--borda-barra);
+  -webkit-app-region: drag;
+  z-index: 1000;
+}
+
+/* CARTÃO PRINCIPAL (a moldura com os dois painéis lado a lado) */
+.cartao {
+  display: flex;                 
+  width: 100%;
+  min-height: calc(100vh - 38px);  
+  border: 1px solid var(--borda);
+  border-radius: 8px;            
+  overflow: hidden;              
+}
+
+/* PAINEL ESQUERDO (apresentação) */
+.painel-apresentacao {
+  position: relative;
+  flex: 0 0 41%;                
+  background-color: var(--fundo-esquerdo);
+  border-right: 1px solid var(--borda);  
+  padding: 0 40px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;       
+  align-items: center;           
+  text-align: center;
+}
+
+/* Logo + nome no canto superior esquerdo */
+.marca {
+  position: absolute;
+  top: 24px;
+  left: 24px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}

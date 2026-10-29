@@ -92,30 +92,23 @@ function validarEmail() {
 
 
 function validarSenha() {
-
   const valor = senha.value.trim();
   const erro = pegarErro(senha);
+  const regras = "A senha deve ter no mínimo 8 caracteres, uma letra maiúscula, um número e um símbolo.";
 
   if (valor === "") {
-    erro.textContent = "O campo senha é obrigatório.";
+    erro.textContent = "O campo senha é obrigatório. " + regras;
     return false;
   }
-
-  if (valor.length < 8) {
-    erro.textContent = "A senha deve ter no mínimo 8 caracteres.";
-    return false;
-  }
-
-  // Verifica se a senha atende a todos os requisitos de segurança.
+  
   if (!regraSenha.test(valor)) {
-    erro.textContent = "A senha deve ter uma letra maiúscula, um número e um símbolo.";
+    erro.textContent = regras;
     return false;
   }
 
   erro.textContent = "";
   return true;
 }
-
 
 
 function validarConfirmarSenha() {
@@ -135,4 +128,34 @@ function validarConfirmarSenha() {
   erro.textContent = "";
   return true;
 }
+
+// Verifica se o campo está vazio antes de executar sua validação.
+function validarSeVazio(campo, funcaoValidar) {
+  if (campo.value.trim() === "") {
+    funcaoValidar();
+  }
+}
+
+nome.addEventListener("blur", () => validarSeVazio(nome, validarNome));
+
+
+email.addEventListener("blur", validarEmail);
+senha.addEventListener("blur", () => validarSeVazio(senha, validarSenha));
+confirmarSenha.addEventListener("blur", () =>
+  validarSeVazio(confirmarSenha, validarConfirmarSenha)
+);
+
+// Percorre os campos do formulário para configurar o evento de foco.
+[nome, email, senha, confirmarSenha].forEach((campo) => {
+  campo.addEventListener("focus", () => {
+   
+    pegarErro(campo).textContent = "";
+  });
+});
+
+const CAMINHO_LOGIN = "..............";
+
+const form = document.getElementById("form");
+const mensagemSucesso = document.getElementById("mensagemSucesso");
+const mensagemErro = document.getElementById("mensagemErro");
 

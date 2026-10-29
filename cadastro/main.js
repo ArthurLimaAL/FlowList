@@ -25,7 +25,7 @@ function criarJanela() {
   });
 
   // Carrega a tela de cadastro dentro da janela
-  janela.loadFile(path.join(__dirname, "src", "cadastro", "cadastro.html"));
+  janela.loadFile(path.join(__dirname, "src", "cadastro.html"));
 }
 
 // Quando o Electron terminar de iniciar, abre a janela

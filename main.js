@@ -11,6 +11,7 @@ function createMainWindow() {
         width: 1000,
         height: 600,
         resizable: false,
+        icon: path.join(__dirname, 'assents/images/icon.png'),
         autoHideMenuBar: true,
         webPreferences: {
             nodeIntegration: true,

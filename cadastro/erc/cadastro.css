@@ -74,3 +74,60 @@ body {
   align-items: center;
   gap: 10px;
 }
+/* icone da logo */
+.marca-icone {
+  width: 30px;
+  height: 30px;
+  border-radius: 9px;
+  background-color: var(--azul);
+  color: #ffffff;                
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.marca-nome {
+  font-size: 18px;
+  font-weight: 700;
+}
+
+/* clamp(mínimo, ideal, máximo) */
+.apresentacao-titulo {
+  font-size: clamp(28px, 2.6vw, 40px);
+  font-weight: 700;
+  line-height: 1.25;
+  margin: 0 0 16px 0;
+}
+
+.apresentacao-texto {
+  font-size: 16px;
+  color: var(--texto-suave);
+  margin: 0;
+}
+
+/* PAINEL DIREITO  */
+.painel-formulario {
+  flex: 1;                       
+  background-color: var(--fundo-direito);
+  display: flex;
+  align-items: center;           
+  justify-content: center;       
+  padding: 24px;                 
+}
+
+.formulario-conteudo {
+  width: 400px;
+  max-width: 100%;               
+}
+
+.formulario-titulo {
+  font-size: 28px;
+  font-weight: 700;
+  margin: 0 0 4px 0;
+}
+
+.formulario-subtitulo {
+  font-size: 15px;
+  color: var(--texto-suave);
+  margin: 0 0 22px 0;
+}

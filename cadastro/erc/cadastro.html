@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- Segurança do Electron (CSP): a página só pode carregar arquivos do próprio app-->
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'">
+
+ 
+  <title>Cadastre-se | FlowList</title>
+
+  <!-- Bootstrap local  -->
+  <link rel="stylesheet" href="../../node_modules/bootstrap/dist/css/bootstrap.min.css">
+
+  <!-- Fonte local. Normal, médio, seminegrito e negrito -->
+  <link rel="stylesheet" href="../../node_modules/@fontsource/inter/400.css">
+  <link rel="stylesheet" href="../../node_modules/@fontsource/inter/500.css">
+  <link rel="stylesheet" href="../../node_modules/@fontsource/inter/600.css">
+  <link rel="stylesheet" href="../../node_modules/@fontsource/inter/700.css">
+
+ 
+  <link rel="stylesheet" href="cadastro.css">
+</head>
+
+<body>
+  
+  <div class="barra-topo"></div>
+
+  <div id="mensagemSucesso" class="mensagem"></div>
+  <div id="mensagemErro" class="mensagem erro"></div>
+
+  <div class="cartao">
+
+    <section class="painel-apresentacao">
+
+      <!-- Logo e nome -->
+      <div class="marca">
+        <!-- ícone de check -->
+        <span class="marca-icone">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+               stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polyline points="20 6 9 17 4 12"></polyline>
+          </svg>
+        </span>
+        <span class="marca-nome">FlowList</span>
+      </div>
+
+    
+      <h1 class="apresentacao-titulo">Organize seu dia,<br>uma tarefa por vez.</h1>
+      <p class="apresentacao-texto">Tarefas, prazos e compromissos em um só lugar.</p>
+    </section>
+
+    <!-- PAINEL DIREITO -->
+    <main class="painel-formulario">
+      <div class="formulario-conteudo">
+        <h2 class="formulario-titulo">Crie sua conta</h2>
+        <p class="formulario-subtitulo">Leva menos de um minuto.</p>
+
+        <!--mensagem de erro  do navegador desligada -->
+        <form id="form" novalidate>
+
+          <div class="campo">
+            <label for="nome" class="form-label">Nome</label>
+            <input id="nome" name="nome" type="text" class="form-control" autocomplete="name">
+            <span class="error"></span>
+          </div>
+
+          <div class="campo">
+            <label for="email" class="form-label">E-mail</label>
+            <input id="email" name="email" type="email" class="form-control" autocomplete="email">
+            <span class="error"></span>
+          </div>
+
+          <div class="campo">
+            <label for="senha" class="form-label">Senha</label>
+            
+
+            <div class="campo-senha">
+              <input id="senha" name="senha" type="password" class="form-control" autocomplete="new-password">
+              
+
+              <button type="button" class="botao-olho" data-alvo="senha" aria-label="Mostrar senha">
+
+                <!-- icones de olhos (aberto) -->
+                <svg class="olho-aberto oculto" width="18" height="18" viewBox="0 0 24 24" fill="none"
+                     stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                  <circle cx="12" cy="12" r="3"></circle>
+                </svg>
+
+
+                  <!-- icones de olhos (fechado) -->
+                <svg class="olho-fechado" width="18" height="18" viewBox="0 0 24 24" fill="none"
+                     stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94"></path>
+                  <path d="M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19"></path>
+                  <line x1="1" y1="1" x2="23" y2="23"></line>
+                </svg>
+              </button>
+            </div>
+            <span class="error"></span>
+          </div>
+
+        
+        </form>
+
+        
+        <p class="link-login">Já tem conta? <a href="#" id="linkEntrar">Entrar</a></p>
+      </div>
+    </main>
+  </div>
+
+  <script src="../storage.js"></script>
+  <script src="cadastro.js"></script>
+</body>
+
+</html>

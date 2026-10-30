@@ -2,7 +2,7 @@
   "name": "trabalho",
   "version": "1.0.0",
   "description": "",
-  "main": "cadastro/main.js",
+  "main": "main.js",
   "scripts": {
     "start": "electron ."
   },

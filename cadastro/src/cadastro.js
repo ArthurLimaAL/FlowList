@@ -145,17 +145,99 @@ confirmarSenha.addEventListener("blur", () =>
   validarSeVazio(confirmarSenha, validarConfirmarSenha)
 );
 
-// Percorre os campos do formulário para configurar o evento de foco.
+// Apaga o erro do campo enquanto a pessoa digita nele.
 [nome, email, senha, confirmarSenha].forEach((campo) => {
-  campo.addEventListener("focus", () => {
-   
+  campo.addEventListener("input", () => {
     pegarErro(campo).textContent = "";
   });
 });
 
-const CAMINHO_LOGIN = "..............";
+const CAMINHO_LOGIN = "../login/login.html";
 
 const form = document.getElementById("form");
 const mensagemSucesso = document.getElementById("mensagemSucesso");
 const mensagemErro = document.getElementById("mensagemErro");
+
+document.getElementById("linkEntrar").href = CAMINHO_LOGIN;
+
+// Mostra uma mensagem e a esconde depois.
+function mostrarMensagem(elemento, texto, duracao) {
+  elemento.textContent = texto;
+  elemento.style.display = "block";
+  setTimeout(() => {
+    elemento.style.display = "none";
+  }, duracao);
+}
+
+// Envio do formulário e validação dos campos
+form.addEventListener("submit", async (e) => {
+  e.preventDefault();
+
+  const resultados = [
+    validarNome(),
+    validarEmail(),
+    validarSenha(),
+    validarConfirmarSenha(),
+  ];
+
+  // Verifica se todos os campos são válidos
+  const tudoCerto = resultados.every((resultado) => resultado === true);
+
+  // Interrompe o cadastro se houver algum erro
+  if (!tudoCerto) {
+    return;
+  }
+
+  const senhaHash = await gerarHash(senha.value.trim());
+
+  const novoUsuario = {
+    nome: nome.value.trim(),
+    email: email.value.trim(),
+    senha: senhaHash,
+  };
+
+  const resultado = salvarUsuario(novoUsuario);
+
+  if (resultado.sucesso) {
+    mostrarMensagem(mensagemSucesso, "Usuário cadastrado com sucesso!", 2500);
+    form.reset();
+
+    // Oculta as senhas
+    botoesOlho.forEach((botao) => {
+      const campo = document.getElementById(botao.dataset.alvo);
+      if (campo.type === "text") {
+        botao.click();
+      }
+    });
+
+    // Redireciona para a página de login
+    setTimeout(() => {
+      window.location.href = CAMINHO_LOGIN;
+    }, 2500);
+
+  } else {
+    mostrarMensagem(mensagemErro, resultado.mensagem, 3000);
+  }
+});
+
+// Enter passa para o próximo campo
+const camposEmOrdem = [nome, email, senha, confirmarSenha];
+
+camposEmOrdem.forEach((campo, indice) => {
+
+  campo.addEventListener("keydown", (e) => {
+
+    if (e.key !== "Enter") {
+      return;
+    }
+
+    const proximo = camposEmOrdem[indice + 1];
+
+    if (proximo) {
+      e.preventDefault();
+      proximo.focus();
+    }
+
+  });
+});
 

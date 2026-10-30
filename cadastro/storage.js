@@ -1,5 +1,4 @@
 // FUNÇÕES DE LOCALSTORAGE
-// Cada usuário salvo tem: nome, email e senha (em hash).
 
 // Busca todos os usuários salvos no localStorage e, se não existir nenhum, retorna um array vazio
 function obterUsuarios() {
@@ -42,3 +41,31 @@ function salvarUsuario(novoUsuario) {
     }
 }
 
+// Gera um hash (embaralha) de uma senha usando SHA-256
+async function gerarHash(senha) {
+    const encoder = new TextEncoder();   // transforma o texto da senha em bytes
+    const data = encoder.encode(senha);
+
+    const hashBuffer = await crypto.subtle.digest("SHA-256", data);  // cria o hash usando o algoritmo SHA-256
+
+    // transforma o resultado (bytes) em texto
+    const hashArray = Array.from(new Uint8Array(hashBuffer));
+    const hashHex = hashArray.map(b => b.toString(16).padStart(2, "0")).join("");
+    return hashHex;
+}
+
+// AUTENTICAR USUÁRIO (e-mail ou nome) + senha
+
+async function autenticarUsuario(identificador, senhaDigitada) {
+    const usuarios = obterUsuarios();                      
+    const senhaHash = await gerarHash(senhaDigitada);     
+
+    // procura o usuário
+    const usuario = usuarios.find(
+        (u) =>
+            (u.email === identificador || u.nome === identificador) &&
+            u.senha === senhaHash
+    );
+
+    return usuario || null;
+}

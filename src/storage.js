@@ -54,18 +54,17 @@ async function gerarHash(senha) {
     return hashHex;
 }
 
-// AUTENTICAR USUÁRIO (e-mail ou nome) + senha
+// AUTENTICAR USUÁRIO (só por e-mail) + senha
 
-async function autenticarUsuario(identificador, senhaDigitada) {
-    const usuarios = obterUsuarios();                      
-    const senhaHash = await gerarHash(senhaDigitada);     
+async function autenticarUsuario(email, senhaDigitada) {
+    const usuarios = obterUsuarios();                      // pega os usuários salvos
+    const senhaHash = await gerarHash(senhaDigitada);      // gera o hash da senha digitada
 
-    // procura o usuário
+
     const usuario = usuarios.find(
-        (u) =>
-            (u.email === identificador || u.nome === identificador) &&
-            u.senha === senhaHash
+        (u) => u.email === email && u.senha === senhaHash
     );
 
+   
     return usuario || null;
 }

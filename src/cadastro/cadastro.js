@@ -199,7 +199,7 @@ form.addEventListener("submit", async (e) => {
   const resultado = salvarUsuario(novoUsuario);
 
   if (resultado.sucesso) {
-    mostrarMensagem(mensagemSucesso, "Usuário cadastrado com sucesso!", 2500);
+    mostrarMensagem(mensagemSucesso, "Usuário cadastrado com sucesso!", 1200);
     form.reset();
 
     // Oculta as senhas
@@ -213,7 +213,7 @@ form.addEventListener("submit", async (e) => {
     // Redireciona para a página de login
     setTimeout(() => {
       window.location.href = CAMINHO_LOGIN;
-    }, 2500);
+    }, 1200);
 
   } else {
     mostrarMensagem(mensagemErro, resultado.mensagem, 3000);

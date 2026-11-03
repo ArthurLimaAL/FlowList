@@ -1,10 +1,10 @@
 let tasks = [], filter = 'todas', editingId = null;
 
-// Declarar variáveis globais corretamente
 const modalTitle = document.getElementById('modalTitle');
 const inputTitulo = document.getElementById('inputTitulo');
 const inputPrioridade = document.getElementById('inputPrioridade');
 const taskModal = document.getElementById('taskModal');
+const buttonVoltar = document.getElementById("bnt-voltar");
 
 function setFilter(f) {
     filter = f;
@@ -44,6 +44,13 @@ function openNew() {
     showModal();
 }
 
+//Arruma isso aqui
+buttonVoltar.addEventListener("click", () => {
+    itens.style.visibility = "hidden";
+    window.location.href = "tela.html";
+});
+
+
 function openEdit(id) {
     const t = tasks.find(x => x.id === id);
     if (!t) return;
@@ -52,7 +59,7 @@ function openEdit(id) {
     modalTitle.textContent = 'Editar tarefa';
     inputTitulo.value = t.titulo;
     inputPrioridade.value = t.prioridade;
-    
+
     showModal();
 }
 
@@ -101,7 +108,7 @@ function removeTask(id) {
 }
 
 // Fechar modal com tecla ESC
-document.addEventListener('keydown', function(e) {
+document.addEventListener('keydown', function (e) {
     if (e.key === 'Escape') {
         closeModal();
     }

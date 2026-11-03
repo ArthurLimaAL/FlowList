@@ -9,6 +9,30 @@
             --blue-hover: #a3d2ff;
         }
 
+        .profile-header {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+        }
+
+        .avatar {
+            width: 96px;
+            height: 96px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 3px solid transparent;
+            background: linear-gradient(var(--card), var(--card)) padding-box, linear-gradient(135deg, var(--blue), #9d6bff) border-box;
+        }
+
+        .btn-camera {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            background: var(--blue);
+            color: #0f111a;
+            border: 2px solid var(--card);
+        }
+
         body {
             background: var(--bg);
             color: var(--text);

@@ -1,4 +1,45 @@
-let tasks = [], filter = 'todas', editingId = null;
+let tasks = [];
+try {
+    const saved = localStorage.getItem('flowlist_tasks');
+    if (saved) {
+        tasks = JSON.parse(saved);
+    }
+} catch (e) {
+    tasks = [];
+}
+
+let filter = 'todas', editingId = null;
+
+// Contador cumulativo de tarefas concluídas (mantido no localStorage)
+let totalConcluidasAcumuladas = 0;
+try {
+    const savedCount = localStorage.getItem('totalTarefasConcluidas');
+    if (savedCount !== null) {
+        totalConcluidasAcumuladas = parseInt(savedCount, 10) || 0;
+    } else {
+        totalConcluidasAcumuladas = tasks.filter(t => t.done).length;
+        localStorage.setItem('totalTarefasConcluidas', totalConcluidasAcumuladas);
+    }
+} catch (e) {
+    totalConcluidasAcumuladas = 0;
+}
+
+function updateTotalConcluidas(val) {
+    totalConcluidasAcumuladas = Math.max(0, val);
+    try {
+        localStorage.setItem('totalTarefasConcluidas', totalConcluidasAcumuladas);
+    } catch (e) {
+        console.error('Erro ao salvar tarefas concluídas acumuladas:', e);
+    }
+}
+
+function saveTasksToStorage() {
+    try {
+        localStorage.setItem('flowlist_tasks', JSON.stringify(tasks));
+    } catch (e) {
+        console.error('Erro ao salvar tarefas:', e);
+    }
+}
 
 const modalTitle = document.getElementById('modalTitle');
 const inputTitulo = document.getElementById('inputTitulo');
@@ -14,16 +55,17 @@ function setFilter(f) {
 }
 
 function render() {
-    const totalConcluidas = tasks.filter(t => t.done).length;
+    const totalConcluidasAtuais = tasks.filter(t => t.done).length;
 
     const contador = document.getElementById('contador');
     if (contador) {
-        contador.textContent = `${tasks.length} ${tasks.length === 1 ? 'tarefa' : 'tarefas'} · ${totalConcluidas} concluídas`;
+        contador.textContent = `${tasks.length} ${tasks.length === 1 ? 'tarefa' : 'tarefas'} · ${totalConcluidasAtuais} concluídas`;
     }
 
+    // Exibe o contador acumulativo no perfil
     const profileConcluidas = document.getElementById('profileConcluidas');
     if (profileConcluidas) {
-        profileConcluidas.innerHTML = `<i class="bi bi-check2-circle me-1"></i>${totalConcluidas} ${totalConcluidas === 1 ? 'tarefa concluída' : 'tarefas concluídas'}`;
+        profileConcluidas.innerHTML = `<i class="bi bi-check2-circle me-1"></i>${totalConcluidasAcumuladas} ${totalConcluidasAcumuladas === 1 ? 'tarefa concluída' : 'tarefas concluídas'}`;
     }
 
     let list = tasks;
@@ -82,6 +124,8 @@ function saveTask() {
         tasks.unshift({ id: Date.now(), titulo, prioridade, done: false });
     }
 
+    saveTasksToStorage();
+
     const modal = bootstrap.Modal.getInstance(taskModal);
     if (modal) {
         modal.hide();
@@ -93,6 +137,12 @@ function toggle(id) {
     const t = tasks.find(x => x.id === id);
     if (t) {
         t.done = !t.done;
+        if (t.done) {
+            updateTotalConcluidas(totalConcluidasAcumuladas + 1);
+        } else {
+            updateTotalConcluidas(totalConcluidasAcumuladas - 1);
+        }
+        saveTasksToStorage();
         render();
     }
 }
@@ -100,9 +150,11 @@ function toggle(id) {
 function removeTask(id) {
     if (!confirm('Excluir?')) return;
     tasks = tasks.filter(x => x.id !== id);
+    saveTasksToStorage();
     render();
 }
 
+// Botão de voltar para tela.html
 function voltar() {
     window.location.href = 'tela.html';
 }

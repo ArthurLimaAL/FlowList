@@ -1,47 +1,17 @@
 const STORAGE_KEY = 'flowlist_tasks';
 const CONCLUIDAS_KEY = 'totalTarefasConcluidas';
 
-const MESES = ['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho',
-    'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'];
-const DIAS_SEMANA = ['Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb', 'Dom'];
-
 let tarefas = [];
 let edicaoId = null;
 let avisoTimer = null;
 
-const hoje = new Date();
-const chaveHoje = chaveLocal(hoje);
-let visao = { ano: hoje.getFullYear(), mes: hoje.getMonth() };
-let selecionada = chaveHoje;
+let visao = { ano: HOJE.getFullYear(), mes: HOJE.getMonth() };
+let selecionada = CHAVE_HOJE;
 
 const grade = document.getElementById('grade');
 const modal = document.getElementById('taskModal');
 const inputTitulo = document.getElementById('inputTitulo');
 const inputPrioridade = document.getElementById('inputPrioridade');
-
-function chaveLocal(d) {
-    const m = String(d.getMonth() + 1).padStart(2, '0');
-    const dia = String(d.getDate()).padStart(2, '0');
-    return `${d.getFullYear()}-${m}-${dia}`;
-}
-
-function paraData(chave) {
-    const [a, m, d] = chave.split('-').map(Number);
-    return new Date(a, m - 1, d);
-}
-
-function inicioDia(d) {
-    return new Date(d.getFullYear(), d.getMonth(), d.getDate());
-}
-
-function ehPassada(chave) {
-    return paraData(chave) < inicioDia(hoje);
-}
-
-function formatarLonga(chave) {
-    const d = paraData(chave);
-    return `${DIAS_SEMANA[(d.getDay() + 6) % 7]}, ${d.getDate()} de ${MESES[d.getMonth()]} de ${d.getFullYear()}`;
-}
 
 function esc(s) {
     return String(s).replace(/[&<>"']/g, c => ({
@@ -97,7 +67,7 @@ function renderCabecalho() {
         ? `${doMes.length} atividade${doMes.length === 1 ? '' : 's'} · ${pendentes} pendente${pendentes === 1 ? '' : 's'}`
         : 'Nenhuma atividade neste mês';
 
-    const noMesAtual = visao.ano === hoje.getFullYear() && visao.mes === hoje.getMonth();
+    const noMesAtual = visao.ano === HOJE.getFullYear() && visao.mes === HOJE.getMonth();
     document.getElementById('btnPrev').disabled = noMesAtual;
 }
 
@@ -123,7 +93,7 @@ function renderGrade() {
 
         if (data.getMonth() !== visao.mes) clases.push('fora');
         if (passada) clases.push('passado');
-        if (chave === chaveHoje) clases.push('hoje');
+        if (chave === CHAVE_HOJE) clases.push('hoje');
         if (chave === selecionada) clases.push('selecionada');
         if (passada && pendentes.length) clases.push('atrasada');
 
@@ -264,8 +234,8 @@ document.getElementById('btnNext').addEventListener('click', () => {
 });
 
 document.getElementById('btnHoje').addEventListener('click', () => {
-    visao = { ano: hoje.getFullYear(), mes: hoje.getMonth() };
-    selecionada = chaveHoje;
+    visao = { ano: HOJE.getFullYear(), mes: HOJE.getMonth() };
+    selecionada = CHAVE_HOJE;
     render();
 });
 

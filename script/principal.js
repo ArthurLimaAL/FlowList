@@ -44,25 +44,9 @@ function saveTasksToStorage() {
 const modalTitle = document.getElementById('modalTitle');
 const inputTitulo = document.getElementById('inputTitulo');
 const inputPrioridade = document.getElementById('inputPrioridade');
-const inputData = document.getElementById('inputData');
 const erroTarefa = document.getElementById('erroTarefa');
 const taskModal = document.getElementById('taskModal');
 const buttonVoltar = document.getElementById('btn-voltar');
-
-function chaveDeHoje() {
-    const d = new Date();
-    return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
-}
-
-function ehDataPassada(chave) {
-    if (!chave) return false;
-    return chave < chaveDeHoje();
-}
-
-function formatarDataCurta(chave) {
-    const [a, m, d] = chave.split('-');
-    return `${d}/${m}/${a}`;
-}
 
 function setFilter(f) {
     filter = f;
@@ -101,8 +85,8 @@ function render() {
     <button class="check-circle ${t.done ? 'done' : ''}" onclick="toggle(${t.id})">${t.done ? '<i class="bi bi-check-lg"></i>' : ''}</button>
     <div class="flex-grow-1">
       <div class="task-title ${t.done ? 'done' : ''}">${t.titulo}</div>
-      ${t.data ? `<div class="chip-data ${ehDataPassada(t.data) && !t.done ? 'atrasada' : ''}">
-        <i class="bi bi-calendar-event me-1"></i>${formatarDataCurta(t.data)}${ehDataPassada(t.data) && !t.done ? ' · atrasada' : ''}
+      ${t.data ? `<div class="chip-data ${ehPassada(t.data) && !t.done ? 'atrasada' : ''}">
+        <i class="bi bi-calendar-event me-1"></i>${formatarCurta(t.data)}${ehPassada(t.data) && !t.done ? ' · atrasada' : ''}
       </div>` : ''}
     </div>
     <span class="badge-prio badge-${t.prioridade === 'Alta' ? 'alta' : t.prioridade === 'Média' ? 'media' : 'baixa'}">${t.prioridade}</span>
@@ -116,8 +100,7 @@ function openNew() {
     modalTitle.textContent = 'Nova tarefa';
     inputTitulo.value = '';
     inputPrioridade.value = 'Média';
-    inputData.value = '';
-    inputData.min = chaveDeHoje();
+    MiniCal.abrir(null);
     erroTarefa.textContent = '';
 }
 
@@ -129,8 +112,7 @@ function openEdit(id) {
     modalTitle.textContent = 'Editar tarefa';
     inputTitulo.value = t.titulo;
     inputPrioridade.value = t.prioridade;
-    inputData.value = t.data || '';
-    inputData.min = chaveDeHoje();
+    MiniCal.abrir(t.data || null);
     erroTarefa.textContent = '';
 
     const modal = bootstrap.Modal.getOrCreateInstance(taskModal);
@@ -145,8 +127,8 @@ function saveTask() {
     }
 
     const prioridade = inputPrioridade.value;
-    const data = inputData.value || null;
-    if (data && ehDataPassada(data)) {
+    const data = MiniCal.valor();
+    if (data && ehPassada(data)) {
         const original = editingId === null ? null : tasks.find(x => x.id === editingId);
         if (!original || original.data !== data) {
             erroTarefa.textContent = 'Não é possível agendar em dias passados. Escolha hoje ou um dia futuro.';
@@ -208,8 +190,8 @@ if (buttonVoltar) {
     buttonVoltar.addEventListener('click', voltar);
 }
 
-if (inputData) {
-    inputData.min = chaveDeHoje();
-}
+MiniCal.iniciar({
+    obterOcupadas: () => tasks.filter(t => t.data && !t.done).map(t => t.data)
+});
 
 render();

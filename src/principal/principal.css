@@ -45,11 +45,6 @@ body {
   overflow: hidden;
 }
 
-
-.m/* ==========================================================
-   MENU LATERAL
-   ========================================================== */
-
 .menu-lateral {
   flex: 0 0 260px;
   background-color: var(--fundo-menu);

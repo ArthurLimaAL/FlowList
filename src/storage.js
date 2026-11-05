@@ -68,3 +68,16 @@ async function autenticarUsuario(email, senhaDigitada) {
    
     return usuario || null;
 }
+// Guarda quem acabou de fazer login
+function salvarUsuarioLogado(usuario) {
+    const dados = { nome: usuario.nome, email: usuario.email };
+    localStorage.setItem("usuarioLogado", JSON.stringify(dados));
+}
+
+function obterUsuarioLogado() {
+    try {
+        return JSON.parse(localStorage.getItem("usuarioLogado"));
+    } catch (error) {
+        return null;
+    }
+}

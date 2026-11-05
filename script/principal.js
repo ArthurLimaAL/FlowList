@@ -44,8 +44,25 @@ function saveTasksToStorage() {
 const modalTitle = document.getElementById('modalTitle');
 const inputTitulo = document.getElementById('inputTitulo');
 const inputPrioridade = document.getElementById('inputPrioridade');
+const inputData = document.getElementById('inputData');
+const erroTarefa = document.getElementById('erroTarefa');
 const taskModal = document.getElementById('taskModal');
 const buttonVoltar = document.getElementById('btn-voltar');
+
+function chaveDeHoje() {
+    const d = new Date();
+    return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
+}
+
+function ehDataPassada(chave) {
+    if (!chave) return false;
+    return chave < chaveDeHoje();
+}
+
+function formatarDataCurta(chave) {
+    const [a, m, d] = chave.split('-');
+    return `${d}/${m}/${a}`;
+}
 
 function setFilter(f) {
     filter = f;
@@ -82,7 +99,12 @@ function render() {
 
     c.innerHTML = list.map(t => `<div class="task-item">
     <button class="check-circle ${t.done ? 'done' : ''}" onclick="toggle(${t.id})">${t.done ? '<i class="bi bi-check-lg"></i>' : ''}</button>
-    <div class="flex-grow-1"><div class="task-title ${t.done ? 'done' : ''}">${t.titulo}</div></div>
+    <div class="flex-grow-1">
+      <div class="task-title ${t.done ? 'done' : ''}">${t.titulo}</div>
+      ${t.data ? `<div class="chip-data ${ehDataPassada(t.data) && !t.done ? 'atrasada' : ''}">
+        <i class="bi bi-calendar-event me-1"></i>${formatarDataCurta(t.data)}${ehDataPassada(t.data) && !t.done ? ' · atrasada' : ''}
+      </div>` : ''}
+    </div>
     <span class="badge-prio badge-${t.prioridade === 'Alta' ? 'alta' : t.prioridade === 'Média' ? 'media' : 'baixa'}">${t.prioridade}</span>
     <button class="icon-btn" onclick="openEdit(${t.id})"><i class="bi bi-pencil"></i></button>
     <button class="icon-btn" onclick="removeTask(${t.id})"><i class="bi bi-trash"></i></button>
@@ -94,6 +116,9 @@ function openNew() {
     modalTitle.textContent = 'Nova tarefa';
     inputTitulo.value = '';
     inputPrioridade.value = 'Média';
+    inputData.value = '';
+    inputData.min = chaveDeHoje();
+    erroTarefa.textContent = '';
 }
 
 function openEdit(id) {
@@ -104,6 +129,9 @@ function openEdit(id) {
     modalTitle.textContent = 'Editar tarefa';
     inputTitulo.value = t.titulo;
     inputPrioridade.value = t.prioridade;
+    inputData.value = t.data || '';
+    inputData.min = chaveDeHoje();
+    erroTarefa.textContent = '';
 
     const modal = bootstrap.Modal.getOrCreateInstance(taskModal);
     modal.show();
@@ -111,17 +139,30 @@ function openEdit(id) {
 
 function saveTask() {
     const titulo = inputTitulo.value.trim();
-    if (!titulo) return alert('Digite um título');
+    if (!titulo) {
+        erroTarefa.textContent = 'Digite um título.';
+        return;
+    }
+
     const prioridade = inputPrioridade.value;
+    const data = inputData.value || null;
+    if (data && ehDataPassada(data)) {
+        const original = editingId === null ? null : tasks.find(x => x.id === editingId);
+        if (!original || original.data !== data) {
+            erroTarefa.textContent = 'Não é possível agendar em dias passados. Escolha hoje ou um dia futuro.';
+            return;
+        }
+    }
 
     if (editingId !== null) {
         const t = tasks.find(x => x.id === editingId);
         if (t) {
             t.titulo = titulo;
             t.prioridade = prioridade;
+            t.data = data;
         }
     } else {
-        tasks.unshift({ id: Date.now(), titulo, prioridade, done: false });
+        tasks.unshift({ id: Date.now(), titulo, prioridade, data, done: false });
     }
 
     saveTasksToStorage();
@@ -159,8 +200,16 @@ function voltar() {
     window.location.href = 'tela.html';
 }
 
+function irParaCalendario() {
+    window.location.href = 'calendario.html';
+}
+
 if (buttonVoltar) {
     buttonVoltar.addEventListener('click', voltar);
+}
+
+if (inputData) {
+    inputData.min = chaveDeHoje();
 }
 
 render();

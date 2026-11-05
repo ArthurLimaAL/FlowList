@@ -10,7 +10,8 @@ function createMainWindow() {
         title: 'Electron',
         width: 1000,
         height: 600,
-        resizable: false,
+        resizable: true,
+        // Icone do projeto
         icon: path.join(__dirname, 'assents/images/icon.png'),
         autoHideMenuBar: true,
         webPreferences: {

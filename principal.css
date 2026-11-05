@@ -7,6 +7,7 @@
             --muted: #8b90a3;
             --blue: #8bc4ff;
             --blue-hover: #a3d2ff;
+            color-scheme: dark;
         }
 
         .profile-header {
@@ -184,4 +185,31 @@
             border: 1px solid #2a2f44;
             color: var(--text);
             border-radius: 10px;
+        }
+
+        .field-label {
+            display: block;
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--muted);
+            margin-bottom: 6px;
+            text-transform: uppercase;
+            letter-spacing: .4px;
+        }
+
+        .erro {
+            color: #ff8a9b;
+            font-size: 12.5px;
+            margin-top: 8px;
+        }
+
+        .chip-data {
+            font-size: 11.5px;
+            color: var(--muted);
+            white-space: nowrap;
+        }
+
+        .chip-data.atrasada {
+            color: #ff8a9b;
+            font-weight: 600;
         }

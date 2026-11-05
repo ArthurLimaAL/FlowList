@@ -43,9 +43,14 @@
                     Concluídas
                 </button>
             </div>
-            <button class="btn-new" data-bs-toggle="modal" data-bs-target="#taskModal" onclick="openNew()">
-                <i class="bi bi-plus-lg"></i> Nova tarefa
-            </button>
+            <div class="d-flex gap-2">
+                <button class="btn-new" onclick="irParaCalendario()">
+                    <i class="bi bi-calendar3"></i> Calendário
+                </button>
+                <button class="btn-new" data-bs-toggle="modal" data-bs-target="#taskModal" onclick="openNew()">
+                    <i class="bi bi-plus-lg"></i> Nova tarefa
+                </button>
+            </div>
         </div>
 
         <div class="task-card" id="taskContainer"></div>
@@ -65,12 +70,20 @@
                     <button class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
                 </div>
                 <div class="modal-body">
+                    <label class="field-label" for="inputTitulo">Tarefa</label>
                     <input id="inputTitulo" class="form-control mb-3" placeholder="Ex: Estudar capítulo 4" />
-                    <select id="inputPrioridade" class="form-select">
+                    <label class="field-label" for="inputPrioridade">Prioridade</label>
+                    <select id="inputPrioridade" class="form-select mb-3">
                         <option>Alta</option>
                         <option selected>Média</option>
                         <option>Baixa</option>
                     </select>
+                    <label class="field-label" for="inputData">Dia (opcional)</label>
+                    <input id="inputData" class="form-control" type="date" />
+                    <div style="color: var(--muted); font-size: 12.5px; margin-top: 6px;">
+                        <i class="bi bi-calendar-event me-1"></i>Só é possível agendar a partir de hoje.
+                    </div>
+                    <div class="erro" id="erroTarefa"></div>
                 </div>
                 <div class="modal-footer border-0">
                     <button class="btn" data-bs-dismiss="modal" style="

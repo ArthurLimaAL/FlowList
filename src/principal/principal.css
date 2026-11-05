@@ -1,0 +1,131 @@
+:root {
+  --fundo-pagina: #0a0b0f;       
+  --fundo-menu: #1b1e27;         
+  --fundo-conteudo: #15171f;    
+  --borda: #2c2f3a;             
+
+  --barra-topo: #232733;         
+  --borda-barra: #3a3f4e;       
+
+  --azul: #3b82f6;
+  --texto: #ffffff;
+
+    --azul-suave: #1e2a4a;         
+  --azul-hover: rgba(59, 130, 246, 0.12);   
+}
+
+body {
+  font-family: 'Inter', sans-serif;
+  background-color: var(--fundo-pagina);
+  color: var(--texto);
+  min-height: 100vh;
+  padding: 33px 5px 5px 5px;     
+  display: flex;
+}
+
+/* FAIXA DO TOPO */
+.barra-topo {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 33px;
+  background-color: var(--barra-topo);
+  border-bottom: 1px solid var(--borda-barra);
+  -webkit-app-region: drag;      /* permite arrastrar a janela */
+  z-index: 1000;
+}
+
+.cartao {
+  display: flex;
+  width: 100%;
+  min-height: calc(100vh - 38px);
+  border: 1px solid var(--borda);
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+
+.m/* ==========================================================
+   MENU LATERAL
+   ========================================================== */
+
+.menu-lateral {
+  flex: 0 0 260px;
+  background-color: var(--fundo-menu);
+  border-right: 1px solid var(--borda);
+  padding: 24px 16px;
+  display: flex;
+  flex-direction: column;         
+}
+
+/*Logo*/
+.menu-marca {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 0 8px;
+  margin-bottom: 28px;
+}
+
+.marca-icone {
+  width: 30px;
+  height: 30px;
+  border-radius: 9px;
+  background-color: var(--azul);
+  color: #ffffff;                
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.marca-nome {
+  font-size: 18px;
+  font-weight: 700;
+}
+
+/*  Links  */
+.menu-itens {
+  flex: 1;                       
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.menu-item {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  height: 44px;
+  padding: 0 14px;
+  border-radius: 10px;
+  color: var(--texto);
+  font-size: 15px;
+  text-decoration: none;         
+}
+
+.menu-item svg {
+  flex-shrink: 0;                
+}
+
+.menu-item:hover {
+  background-color: var(--azul-hover);
+}
+
+.menu-item.ativo {
+  background-color: var(--azul-suave);
+  font-weight: 600;
+}
+
+.menu-item.ativo svg {
+  color: var(--azul);           
+}
+
+.menu-item:focus-visible {
+  outline: 2px solid var(--azul);   
+}
+
+.conteudo {
+  flex: 1;
+  background-color: var(--fundo-conteudo);
+}

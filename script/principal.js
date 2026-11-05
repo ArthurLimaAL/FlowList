@@ -14,9 +14,16 @@ function setFilter(f) {
 }
 
 function render() {
+    const totalConcluidas = tasks.filter(t => t.done).length;
+
     const contador = document.getElementById('contador');
     if (contador) {
-        contador.textContent = `${tasks.length} ${tasks.length === 1 ? 'tarefa' : 'tarefas'} · ${tasks.filter(t => t.done).length} concluídas`;
+        contador.textContent = `${tasks.length} ${tasks.length === 1 ? 'tarefa' : 'tarefas'} · ${totalConcluidas} concluídas`;
+    }
+
+    const profileConcluidas = document.getElementById('profileConcluidas');
+    if (profileConcluidas) {
+        profileConcluidas.innerHTML = `<i class="bi bi-check2-circle me-1"></i>${totalConcluidas} ${totalConcluidas === 1 ? 'tarefa concluída' : 'tarefas concluídas'}`;
     }
 
     let list = tasks;
@@ -96,7 +103,6 @@ function removeTask(id) {
     render();
 }
 
-// Botão de voltar para tela.html
 function voltar() {
     window.location.href = 'tela.html';
 }

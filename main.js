@@ -4,12 +4,14 @@ const path = require('path');
 
 function createMainWindow() {
 
-    nativeTheme.themeSource = 'dark'
+    nativeTheme.themeSource = 'dark';
 
     const mainWindow = new BrowserWindow({
-        title: 'Electron',
-        width: 1000,
-        height: 600,
+        title: 'FlowList',
+        width: 1100,
+        height: 700,
+        minWidth: 950,
+        minHeight: 600,
         resizable: true,
         // Icone do projeto
         icon: path.join(__dirname, 'assents/images/icon.png'),
@@ -26,7 +28,7 @@ function createMainWindow() {
     });
 
     mainWindow.loadURL(startUrl);
-};
+}
 
 app.whenReady().then(createMainWindow);
 

@@ -21,29 +21,38 @@
     </div>
 
     <div class="container-tasks">
-        <div class="d-flex justify-content-between align-items-start mb-4">
-            <div>
-                <h2 class="fw-bold mb-1">Minhas tarefas</h2>
-                <div id="contador" style="color: var(--muted); font-size: 14px">
-                    0 tarefas · 0 concluídas
-                </div>
+        <div class="mb-4">
+            <h2 class="fw-bold mb-1">Minhas tarefas</h2>
+            <div id="contador" style="color: var(--muted); font-size: 14px">
+                0 tarefas · 0 concluídas
+            </div>
+        </div>
+
+        <div class="d-flex justify-content-between align-items-center mb-3">
+            <div class="filters d-flex gap-2">
+                <button class="btn btn-filter-active" id="f-todas" onclick="setFilter('todas')">
+                    Todas
+                </button>
+                <button class="btn btn-filter-inactive" id="f-pendentes" onclick="setFilter('pendentes')">
+                    Pendentes
+                </button>
+                <button class="btn btn-filter-inactive" id="f-concluidas" onclick="setFilter('concluidas')">
+                    Concluídas
+                </button>
             </div>
             <button class="btn-new" data-bs-toggle="modal" data-bs-target="#taskModal" onclick="openNew()">
                 <i class="bi bi-plus-lg"></i> Nova tarefa
             </button>
         </div>
-        <div class="filters d-flex gap-2 mb-3">
-            <button class="btn btn-filter-active" id="f-todas" onclick="setFilter('todas')">
-                Todas
-            </button>
-            <button class="btn btn-filter-inactive" id="f-pendentes" onclick="setFilter('pendentes')">
-                Pendentes
-            </button>
-            <button class="btn btn-filter-inactive" id="f-concluidas" onclick="setFilter('concluidas')">
-                Concluídas
+
+        <div class="task-card" id="taskContainer"></div>
+
+        <!-- Botão de voltar centralizado na parte inferior -->
+        <div class="d-flex justify-content-center mt-4">
+            <button class="btn-new" id="btn-voltar" onclick="voltar()">
+                <i class="bi bi-arrow-left"></i> Voltar
             </button>
         </div>
-        <div class="task-card" id="taskContainer"></div>
     </div>
 
     <div class="modal fade" id="taskModal" tabindex="-1">
@@ -81,11 +90,6 @@
             </div>
         </div>
     </div>
-
-    <!-- Botão de voltar -->
-    <button class="btn-new" id="btn-voltar" onclick="voltar()">
-        <i class="bi bi-arrow-left"></i> Voltar
-    </button>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
     <script src="script/principal.js"></script>

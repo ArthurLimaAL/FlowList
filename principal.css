@@ -53,6 +53,7 @@
             font-weight: 600;
             padding: 9px 18px;
             display: flex;
+            align-items: center;
             gap: 8px;
         }
 

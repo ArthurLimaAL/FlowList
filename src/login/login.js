@@ -104,14 +104,14 @@ form.addEventListener("submit", async (e) => {
   // Confere e-mail e senha no storage.js.
   const usuario = await autenticarUsuario(email.value.trim(), senha.value.trim());
 
-   if (usuario) {
+     if (usuario) {
+    salvarUsuarioLogado(usuario);   // guarda quem entrou, para a tela principal ler
     mostrarMensagem(mensagemSucesso, "Login realizado com sucesso!", 1000);
 
     setTimeout(() => {
       window.location.href = CAMINHO_PRINCIPAL;
     }, 1000);
   } else {
-    
     mostrarMensagem(mensagemErro, "E-mail ou senha incorretos.", 3000);
   }
 });

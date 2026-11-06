@@ -123,4 +123,16 @@ body {
 .conteudo {
   flex: 1;
   background-color: var(--fundo-conteudo);
+  padding: 48px 44px;
+}
+
+.titulo-boas-vindas {
+  font-size: 36px;
+  font-weight: 700;
+  margin: 0 0 6px;
+}
+
+.subtitulo-boas-vindas {
+  font-size: 17px;
+  margin: 0;
 }

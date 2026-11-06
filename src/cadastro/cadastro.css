@@ -87,6 +87,11 @@ body {
   justify-content: center;
 }
 
+.marca-icone i {
+  font-size: 18px;
+  line-height: 1;
+}
+
 .marca-nome {
   font-size: 18px;
   font-weight: 700;
@@ -208,6 +213,11 @@ body {
   color: var(--texto-suave);
   border-radius: 6px;
   cursor: pointer;
+}
+
+.botao-olho i {
+  font-size: 18px;
+  line-height: 1;
 }
 
 .botao-olho:hover {

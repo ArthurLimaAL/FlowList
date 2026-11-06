@@ -81,3 +81,9 @@ function obterUsuarioLogado() {
         return null;
     }
 }
+
+
+// Apaga o usuário logado (usado no botão Sair)
+function removerUsuarioLogado() {
+    localStorage.removeItem("usuarioLogado");
+}

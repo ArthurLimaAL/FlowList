@@ -87,3 +87,50 @@ function obterUsuarioLogado() {
 function removerUsuarioLogado() {
     localStorage.removeItem("usuarioLogado");
 }
+
+// ---------- TAREFAS ----------
+
+// Busca as tarefas de TODOS os usuários (uso interno)
+function obterTodasTarefas() {
+    try {
+        return JSON.parse(localStorage.getItem("tarefas")) || [];
+    } catch (error) {
+        console.error("Erro ao ler tarefas do localStorage", error);
+        return [];
+    }
+}
+
+// Busca só as tarefas de quem está logado
+function obterTarefas() {
+    const usuario = obterUsuarioLogado();
+    if (!usuario) return [];
+
+    return obterTodasTarefas().filter((t) => t.email === usuario.email);
+}
+
+// Salva uma nova tarefa para quem está logado
+function salvarTarefa(dados) {
+    const usuario = obterUsuarioLogado();
+    if (!usuario) {
+        return { sucesso: false, mensagem: "Nenhum usuário logado." };
+    }
+
+    try {
+        const tarefas = obterTodasTarefas();
+
+        tarefas.push({
+            id: Date.now(),              // número único para identificar a tarefa
+            email: usuario.email,        
+            titulo: dados.titulo,
+            prazo: dados.prazo,          
+            prioridade: dados.prioridade,
+            concluida: false
+        });
+
+        localStorage.setItem("tarefas", JSON.stringify(tarefas));
+        return { sucesso: true, mensagem: "Tarefa criada!" };
+    } catch (error) {
+        console.error("Erro ao salvar tarefa", error);
+        return { sucesso: false, mensagem: "Erro ao salvar tarefa." };
+    }
+}

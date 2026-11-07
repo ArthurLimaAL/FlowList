@@ -12,6 +12,17 @@
 
     --azul-suave: #1e2a4a;         
   --azul-hover: rgba(59, 130, 246, 0.12);   
+    --fundo-campo: #0d0e13;
+  --texto-suave: #7d8296;
+
+  --alta-fundo: #3a1f2b;
+  --alta-texto: #f472a0;
+  --media-fundo: #3a2d17;
+  --media-texto: #f0b840;
+  --baixa-fundo: #12302a;
+  --baixa-texto: #34d399;
+
+    --azul-escuro: #2563eb;
 }
 
 body {
@@ -123,7 +134,7 @@ body {
 .conteudo {
   flex: 1;
   background-color: var(--fundo-conteudo);
-  padding: 48px 44px;
+  padding: 48px 78px;
 }
 
 .titulo-boas-vindas {
@@ -135,4 +146,194 @@ body {
 .subtitulo-boas-vindas {
   font-size: 17px;
   margin: 0;
+}
+
+.cartao-vazio {
+  max-width: 900px;
+  margin-top: 28px;
+  padding: 36px 48px 40px;
+  background-color: var(--fundo-menu);
+  border: 1px solid var(--borda);
+  border-radius: 28px;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.cartao-vazio-icone {
+  width: 84px;
+  height: 84px;
+  border-radius: 50%;
+  background-color: var(--azul-suave);
+  color: var(--azul);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 24px;
+}
+
+.cartao-vazio-titulo {
+  font-size: 26px;
+  font-weight: 700;
+  margin: 0 0 8px;
+}
+
+.cartao-vazio-texto {
+  font-size: 17px;
+  line-height: 1.5;
+  margin: 0 0 28px;
+}
+
+.form-tarefa {
+  width: 100%;
+  max-width: 770px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* Caixa escura do campo + opções */
+.form-tarefa-campo,
+.form-tarefa-opcoes {
+  width: 100%;
+  background-color: var(--fundo-campo);
+  border-left: 1px solid var(--borda);
+  border-right: 1px solid var(--borda);
+}
+
+.form-tarefa-campo {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 18px 26px 6px;
+  border-top: 1px solid var(--borda);
+  border-radius: 20px 20px 0 0;
+}
+
+.form-tarefa-opcoes {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 26px 18px;
+  border-bottom: 1px solid var(--borda);
+  border-radius: 0 0 20px 20px;
+}
+
+.form-tarefa-circulo {
+  flex-shrink: 0;
+  width: 30px;
+  height: 30px;
+  border: 2px solid var(--borda-barra);
+  border-radius: 50%;
+}
+
+.form-tarefa-input {
+  flex: 1;
+  background: transparent;
+  border: none;
+  outline: none;
+  color: var(--texto);
+  font-size: 18px;
+  padding: 6px 0;
+}
+
+.form-tarefa-input::placeholder {
+  color: var(--texto-suave);
+}
+
+/* Botão Prazo */
+.botao-prazo {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  height: 44px;
+  padding: 0 22px;
+  background: transparent;
+  color: var(--texto);
+  border: 1px solid var(--borda-barra);
+  border-radius: 999px;
+  font-size: 16px;
+}
+
+.botao-prazo:hover {
+  background-color: var(--azul-hover);
+}
+
+/* Prioridades: esconde a bolinha e mostra só a etiqueta */
+.prioridade-radio {
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.prioridade {
+  display: flex;
+  align-items: center;
+  height: 44px;
+  padding: 0 20px;
+  border-radius: 999px;
+  border: 2px solid transparent;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.prioridade-alta  { background-color: var(--alta-fundo);  color: var(--alta-texto); }
+.prioridade-media { background-color: var(--media-fundo); color: var(--media-texto); }
+.prioridade-baixa { background-color: var(--baixa-fundo); color: var(--baixa-texto); }
+
+/* Etiqueta escolhida ganha uma borda da própria cor */
+.prioridade-radio:checked + .prioridade {
+  border-color: currentColor;
+  font-weight: 600;
+}
+
+/* Navegação pelo teclado */
+.prioridade-radio:focus-visible + .prioridade,
+.botao-prazo:focus-visible {
+  outline: 2px solid var(--azul);
+  outline-offset: 2px;
+}
+
+.botao-criar {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  height: 58px;
+  margin-top: 28px;
+  padding: 0 44px;
+  background-color: var(--azul);
+  color: #ffffff;
+  border: none;
+  border-radius: 16px;
+  font-size: 20px;
+  font-weight: 600;
+}
+
+.botao-criar:hover {
+  background-color: var(--azul-escuro);
+}
+
+.botao-criar:focus-visible {
+  outline: 2px solid var(--azul);
+  outline-offset: 3px;
+}
+
+.prazo-area {
+  position: relative;
+}
+
+/* Fica escondido embaixo do botão, só para o calendário abrir ali perto */
+.prazo-data {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  pointer-events: none;
+  border: none;
+  padding: 0;
+  color-scheme: dark;
 }

@@ -337,3 +337,161 @@ body {
   padding: 0;
   color-scheme: dark;
 }
+
+/* ---------- ÁREA DE TAREFAS ---------- */
+
+.area-tarefas {
+  max-width: 900px;
+  margin-top: 28px;
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+}
+
+/* Formulário quando está em cima da lista: mais compacto e alinhado à esquerda */
+.area-tarefas .form-tarefa {
+  max-width: none;
+  align-items: stretch;
+}
+
+.area-tarefas .form-tarefa-campo {
+  padding: 14px 20px 4px;
+}
+
+.area-tarefas .form-tarefa-opcoes {
+  padding: 6px 20px 14px;
+}
+
+.area-tarefas .mensagem-tarefa {
+  margin-top: 10px;
+  min-height: 20px;
+  font-size: 14px;
+}
+
+.area-tarefas .botao-criar {
+  align-self: flex-end;
+  height: 46px;
+  margin-top: 4px;
+  padding: 0 28px;
+  font-size: 16px;
+  border-radius: 12px;
+}
+
+/* ---------- LISTAS ---------- */
+
+.lista-titulo {
+  font-size: 18px;
+  font-weight: 600;
+  margin: 0 0 12px;
+}
+
+.lista-titulo-atrasadas {
+  color: var(--erro);
+}
+
+.lista-tarefas {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  background-color: var(--fundo-campo);
+  border: 1px solid var(--borda);
+  border-radius: 16px;
+  overflow: hidden;
+}
+
+.sem-tarefas {
+  margin: 0;
+  padding: 20px;
+  font-size: 15px;
+  color: var(--texto-suave);
+  border: 1px dashed var(--borda);
+  border-radius: 16px;
+}
+
+/* ---------- LINHA DE UMA TAREFA ---------- */
+
+.tarefa-item {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 14px 20px;
+  border-bottom: 1px solid var(--borda);
+}
+
+.tarefa-item:last-child {
+  border-bottom: none;
+}
+
+.tarefa-item:hover {
+  background-color: var(--azul-hover);
+}
+
+/* O círculo que marca como concluída */
+.tarefa-check {
+  flex-shrink: 0;
+  width: 26px;
+  height: 26px;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: transparent;
+  color: #ffffff;
+  border: 2px solid var(--borda-barra);
+  border-radius: 50%;
+}
+
+.tarefa-check:hover {
+  border-color: var(--azul);
+}
+
+.tarefa-check svg {
+  opacity: 0;
+}
+
+.tarefa-check:focus-visible {
+  outline: 2px solid var(--azul);
+  outline-offset: 2px;
+}
+
+.tarefa-titulo {
+  flex: 1;
+  font-size: 16px;
+}
+
+/* Etiqueta de prioridade (menor que a do formulário) */
+.etiqueta {
+  font-size: 13px;
+  padding: 4px 12px;
+  border-radius: 999px;
+}
+
+.etiqueta-alta  { background-color: var(--alta-fundo);  color: var(--alta-texto); }
+.etiqueta-media { background-color: var(--media-fundo); color: var(--media-texto); }
+.etiqueta-baixa { background-color: var(--baixa-fundo); color: var(--baixa-texto); }
+
+.tarefa-prazo {
+  min-width: 60px;
+  text-align: right;
+  font-size: 14px;
+  color: var(--texto-suave);
+}
+
+.tarefa-prazo.atrasada {
+  color: var(--erro);
+}
+
+/* Tarefa concluída */
+.tarefa-item.concluida .tarefa-titulo {
+  text-decoration: line-through;
+  color: var(--texto-suave);
+}
+
+.tarefa-item.concluida .tarefa-check {
+  background-color: var(--azul);
+  border-color: var(--azul);
+}
+
+.tarefa-item.concluida .tarefa-check svg {
+  opacity: 1;
+}

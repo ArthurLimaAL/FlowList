@@ -1,37 +1,38 @@
-const { app, BrowserWindow, nativeTheme } = require('electron');
-const url = require('url');
-const path = require('path');
+const { app, BrowserWindow } = require("electron");
+const path = require("node:path");
 
-function createMainWindow() {
+function criarJanelaPrincipal() {
+  const janela = new BrowserWindow({
+    title: "FlowList",
+    width: 1100,
+    height: 720,
+    minWidth: 900,
+    minHeight: 600,
+    autoHideMenuBar: true,
+    icon: path.join(__dirname, "assets", "images", "flowlist-icon.png"),
+    webPreferences: {
+      contextIsolation: true,
+      nodeIntegration: false,
+      sandbox: true,
+    },
+  });
 
-    nativeTheme.themeSource = 'dark';
+  janela.webContents.setWindowOpenHandler(() => ({ action: "deny" }));
+  janela.webContents.on("will-navigate", (evento, destino) => {
+    if (!destino.startsWith("file://")) evento.preventDefault();
+  });
 
-    const mainWindow = new BrowserWindow({
-        title: 'FlowList',
-        width: 1100,
-        height: 700,
-        minWidth: 950,
-        minHeight: 600,
-        resizable: true,
-        // Icone do projeto
-        icon: path.join(__dirname, 'assents/images/icon.png'),
-        autoHideMenuBar: true,
-        webPreferences: {
-            nodeIntegration: true,
-            contextIsolation: false
-        }
-    });
-
-    const startUrl = url.format({
-        pathname: path.join(__dirname, 'tela.html'),
-        protocol: 'file',
-    });
-
-    mainWindow.loadURL(startUrl);
+  // O fluxo começa no cadastro; dali o usuário pode ir ao login e, após autenticar, à tela principal.
+  janela.loadFile(path.join(__dirname, "src", "pages", "cadastro", "index.html"));
 }
 
-app.whenReady().then(createMainWindow);
+app.whenReady().then(() => {
+  criarJanelaPrincipal();
+  app.on("activate", () => {
+    if (BrowserWindow.getAllWindows().length === 0) criarJanelaPrincipal();
+  });
+});
 
-app.on('window-all-closed', () => {
-    if (process.platform !== 'darwin') app.quit();
+app.on("window-all-closed", () => {
+  if (process.platform !== "darwin") app.quit();
 });

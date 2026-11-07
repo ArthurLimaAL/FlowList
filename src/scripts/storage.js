@@ -153,3 +153,66 @@ function alternarConclusaoTarefa(id) {
         return false;
     }
 }
+
+// Exclui uma tarefa do usuário logado
+function excluirTarefa(id) {
+    const usuario = obterUsuarioLogado();
+    if (!usuario) return false;
+
+    try {
+        const tarefas = obterTodasTarefas();
+        const novasTarefas = tarefas.filter((t) => !(t.id === id && t.email === usuario.email));
+        localStorage.setItem("tarefas", JSON.stringify(novasTarefas));
+        return true;
+    } catch (error) {
+        console.error("Erro ao excluir tarefa", error);
+        return false;
+    }
+}
+
+// Atualiza o nome do usuário logado
+function atualizarNomeUsuario(novoNome) {
+    const usuario = obterUsuarioLogado();
+    if (!usuario) return { sucesso: false, mensagem: "Nenhum usuário logado." };
+
+    try {
+        const usuarios = obterUsuarios();
+        const index = usuarios.findIndex((u) => u.email === usuario.email);
+        if (index === -1) return { sucesso: false, mensagem: "Usuário não encontrado." };
+
+        usuarios[index].nome = novoNome;
+        salvarUsuarios(usuarios);
+
+        usuario.nome = novoNome;
+        salvarUsuarioLogado(usuario);
+
+        return { sucesso: true, mensagem: "Nome atualizado com sucesso!" };
+    } catch (error) {
+        console.error("Erro ao atualizar nome", error);
+        return { sucesso: false, mensagem: "Erro ao atualizar nome." };
+    }
+}
+
+// Altera a senha do usuário logado
+async function alterarSenhaUsuario(senhaAtual, novaSenha) {
+    const usuario = obterUsuarioLogado();
+    if (!usuario) return { sucesso: false, mensagem: "Nenhum usuário logado." };
+
+    try {
+        const usuarios = obterUsuarios();
+        const user = usuarios.find((u) => u.email === usuario.email);
+        if (!user) return { sucesso: false, mensagem: "Usuário não encontrado." };
+
+        const hashAtual = await gerarHash(senhaAtual);
+        if (user.senha !== hashAtual) {
+            return { sucesso: false, mensagem: "Senha atual incorreta." };
+        }
+
+        user.senha = await gerarHash(novaSenha);
+        salvarUsuarios(usuarios);
+        return { sucesso: true, mensagem: "Senha alterada com sucesso!" };
+    } catch (error) {
+        console.error("Erro ao alterar senha", error);
+        return { sucesso: false, mensagem: "Erro ao alterar senha." };
+    }
+}

@@ -1,0 +1,512 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+  <meta charset="UTF-8">
+
+  <!-- Segurança (CSP): a página só carrega arquivos do próprio app -->
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'self' 'unsafe-inline';">
+
+  <title>FlowList</title>
+
+  <!-- Bootstrap e fonte Inter locais  -->
+  <link rel="stylesheet" href="../../../node_modules/bootstrap/dist/css/bootstrap.min.css">
+  <link rel="stylesheet" href="../../../node_modules/@fontsource/inter/400.css">
+  <link rel="stylesheet" href="../../../node_modules/@fontsource/inter/600.css">
+  <link rel="stylesheet" href="../../../node_modules/@fontsource/inter/700.css">
+
+  <link rel="stylesheet" href="principal.css">
+</head>
+
+<body>
+
+  <div class="barra-topo"></div>
+
+  <div class="cartao">
+    <aside class="menu-lateral">
+
+      <!-- Logo -->
+      <div class="menu-marca">
+        <span class="marca-icone">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+               stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polyline points="20 6 9 17 4 12"></polyline>
+          </svg>
+        </span>
+        <span class="marca-nome">FlowList</span>
+      </div>
+
+      <!-- Os links do menu -->
+      <nav class="menu-itens">
+        <button type="button" class="menu-item ativo" data-aba="inicio">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+               stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+            <polyline points="9 22 9 12 15 12 15 22"></polyline>
+          </svg>
+          Início
+        </button>
+
+        <button type="button" class="menu-item" data-aba="tarefas">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+               stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polyline points="9 11 12 14 22 4"></polyline>
+            <path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"></path>
+          </svg>
+          Minhas tarefas
+        </button>
+
+        <button type="button" class="menu-item" data-aba="calendario">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+               stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+            <line x1="16" y1="2" x2="16" y2="6"></line>
+            <line x1="8" y1="2" x2="8" y2="6"></line>
+            <line x1="3" y1="10" x2="21" y2="10"></line>
+          </svg>
+          Calendário
+        </button>
+
+        <button type="button" class="menu-item" data-aba="perfil">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+               stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+            <circle cx="12" cy="7" r="4"></circle>
+          </svg>
+          Perfil
+        </button>
+      </nav>
+
+      <a href="../login/index.html" id="botaoSair" class="menu-item">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+             stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
+          <polyline points="16 17 21 12 16 7"></polyline>
+          <line x1="21" y1="12" x2="9" y2="12"></line>
+        </svg>
+        Sair
+      </a>
+    </aside>
+
+    <main class="conteudo">
+
+      <!-- ==================== ABA 1: INÍCIO ==================== -->
+      <section id="painelInicio" class="painel-aba">
+        <header class="painel-cabecalho">
+          <h1 class="titulo-boas-vindas">Boas-vindas, <span id="nomeUsuario"></span></h1>
+          <p class="subtitulo-boas-vindas">Vamos deixar tudo pronto em poucos passos.</p>
+        </header>
+
+        <!-- ESTADO VAZIO: aparece quando o usuário ainda não tem nenhuma tarefa -->
+        <section id="estadoVazio" class="cartao-vazio">
+
+          <span class="cartao-vazio-icone">
+            <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                 stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"></path>
+              <rect x="8" y="2" width="8" height="4" rx="1" ry="1"></rect>
+            </svg>
+          </span>
+
+          <h2 class="cartao-vazio-titulo">Crie sua primeira tarefa</h2>
+          <p class="cartao-vazio-texto">
+            Anote o que precisa fazer, escolha um prazo e a prioridade.<br>
+            O FlowList cuida do resto.
+          </p>
+
+          <!-- FORMULÁRIO: o JavaScript move ele para a área de tarefas quando houver tarefas -->
+          <form id="formTarefa" class="form-tarefa" novalidate>
+
+            <div class="form-tarefa-campo">
+              <span class="form-tarefa-circulo" aria-hidden="true"></span>
+              <input id="campoTarefa" type="text" class="form-tarefa-input"
+                     placeholder="Ex.: Entregar relatório de Física"
+                     aria-label="Nome da tarefa" autocomplete="off">
+            </div>
+
+            <div class="form-tarefa-opcoes">
+
+              <div class="prazo-area">
+                <button type="button" id="botaoPrazo" class="botao-prazo">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                       stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                    <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+                    <line x1="16" y1="2" x2="16" y2="6"></line>
+                    <line x1="8" y1="2" x2="8" y2="6"></line>
+                    <line x1="3" y1="10" x2="21" y2="10"></line>
+                  </svg>
+                  <span id="textoPrazo">Prazo</span>
+                </button>
+
+                <input type="date" id="campoPrazo" class="prazo-data"
+                       aria-label="Prazo da tarefa" tabindex="-1">
+              </div>
+
+              <input type="radio" name="prioridade" id="prioAlta" value="alta" class="prioridade-radio">
+              <label for="prioAlta" class="prioridade prioridade-alta">Alta</label>
+
+              <input type="radio" name="prioridade" id="prioMedia" value="media" class="prioridade-radio" checked>
+              <label for="prioMedia" class="prioridade prioridade-media">Média</label>
+
+              <input type="radio" name="prioridade" id="prioBaixa" value="baixa" class="prioridade-radio">
+              <label for="prioBaixa" class="prioridade prioridade-baixa">Baixa</label>
+
+            </div>
+
+            <p id="mensagemTarefa" class="mensagem-tarefa" role="status"></p>
+
+            <button type="submit" class="botao-criar">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                   stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <line x1="12" y1="5" x2="12" y2="19"></line>
+                <line x1="5" y1="12" x2="19" y2="12"></line>
+              </svg>
+              <span id="textoBotaoCriar">Criar primeira tarefa</span>
+            </button>
+
+          </form>
+
+        </section>
+
+        <!-- ÁREA DE TAREFAS: aparece quando o usuário já tem tarefas -->
+        <section id="areaTarefas" class="area-tarefas" hidden>
+
+          <div id="slotFormulario"></div>
+
+          <div id="blocoAtrasadas" hidden>
+            <h2 class="lista-titulo lista-titulo-atrasadas">Atrasadas</h2>
+            <ul id="listaAtrasadas" class="lista-tarefas"></ul>
+          </div>
+
+          <div>
+            <h2 class="lista-titulo">Para hoje</h2>
+            <ul id="listaHoje" class="lista-tarefas"></ul>
+            <p id="semTarefasHoje" class="sem-tarefas" hidden>Nada para hoje por aqui.</p>
+          </div>
+
+        </section>
+      </section>
+
+      <!-- ==================== ABA 2: MINHAS TAREFAS ==================== -->
+      <section id="painelTarefas" class="painel-aba" hidden>
+        <header class="painel-cabecalho">
+          <h1 class="painel-titulo">Minhas tarefas</h1>
+          <p class="painel-subtitulo">Visualize, filtre e gerencie todas as suas atividades.</p>
+        </header>
+
+        <div class="tarefas-barra-acoes">
+          <div class="busca-campo">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <circle cx="11" cy="11" r="8"></circle>
+              <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+            </svg>
+            <input type="text" id="campoBuscaTarefas" class="busca-input" placeholder="Buscar tarefas por título...">
+          </div>
+
+          <button type="button" id="btnToggleNovaTarefa" class="botao-acao-primario">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <line x1="12" y1="5" x2="12" y2="19"></line>
+              <line x1="5" y1="12" x2="19" y2="12"></line>
+            </svg>
+            <span id="textoBtnToggle">Nova tarefa</span>
+          </button>
+        </div>
+
+        <!-- Formulário rápido colapsável em Minhas Tarefas -->
+        <div id="boxNovaTarefaMinhas" class="box-nova-tarefa" hidden>
+          <form id="formTarefaMinhas" class="form-tarefa" novalidate>
+            <div class="form-tarefa-campo">
+              <span class="form-tarefa-circulo" aria-hidden="true"></span>
+              <input id="campoTarefaMinhas" type="text" class="form-tarefa-input"
+                     placeholder="Ex.: Finalizar trabalho de História"
+                     aria-label="Nome da nova tarefa" autocomplete="off">
+            </div>
+
+            <div class="form-tarefa-opcoes">
+              <div class="prazo-area">
+                <button type="button" id="botaoPrazoMinhas" class="botao-prazo">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                       stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                    <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+                    <line x1="16" y1="2" x2="16" y2="6"></line>
+                    <line x1="8" y1="2" x2="8" y2="6"></line>
+                    <line x1="3" y1="10" x2="21" y2="10"></line>
+                  </svg>
+                  <span id="textoPrazoMinhas">Prazo</span>
+                </button>
+                <input type="date" id="campoPrazoMinhas" class="prazo-data" aria-label="Prazo da tarefa" tabindex="-1">
+              </div>
+
+              <input type="radio" name="prioridadeMinhas" id="prioAltaMinhas" value="alta" class="prioridade-radio">
+              <label for="prioAltaMinhas" class="prioridade prioridade-alta">Alta</label>
+
+              <input type="radio" name="prioridadeMinhas" id="prioMediaMinhas" value="media" class="prioridade-radio" checked>
+              <label for="prioMediaMinhas" class="prioridade prioridade-media">Média</label>
+
+              <input type="radio" name="prioridadeMinhas" id="prioBaixaMinhas" value="baixa" class="prioridade-radio">
+              <label for="prioBaixaMinhas" class="prioridade prioridade-baixa">Baixa</label>
+            </div>
+
+            <div class="form-inline-acoes">
+              <p id="mensagemTarefaMinhas" class="mensagem-tarefa" role="status"></p>
+              <div class="botoes-grupo">
+                <button type="button" id="btnCancelarNovaTarefaMinhas" class="botao-secundario">Cancelar</button>
+                <button type="submit" class="botao-criar-pequeno">Salvar tarefa</button>
+              </div>
+            </div>
+          </form>
+        </div>
+
+        <!-- Filtros por status -->
+        <div class="filtros-container">
+          <button type="button" class="filtro-btn ativo" data-filtro="todas">
+            Todas <span id="badgeFiltroTodas" class="filtro-badge">0</span>
+          </button>
+          <button type="button" class="filtro-btn" data-filtro="pendentes">
+            Pendentes <span id="badgeFiltroPendentes" class="filtro-badge">0</span>
+          </button>
+          <button type="button" class="filtro-btn" data-filtro="concluidas">
+            Concluídas <span id="badgeFiltroConcluidas" class="filtro-badge">0</span>
+          </button>
+          <button type="button" class="filtro-btn" data-filtro="atrasadas">
+            Atrasadas <span id="badgeFiltroAtrasadas" class="filtro-badge">0</span>
+          </button>
+        </div>
+
+        <ul id="listaMinhasTarefas" class="lista-tarefas"></ul>
+
+        <div id="semTarefasMinhas" class="sem-tarefas-caixa" hidden>
+          <svg width="42" height="42" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polyline points="9 11 12 14 22 4"></polyline>
+            <path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"></path>
+          </svg>
+          <p id="textoSemTarefasMinhas">Nenhuma tarefa encontrada.</p>
+        </div>
+      </section>
+
+      <!-- ==================== ABA 3: CALENDÁRIO ==================== -->
+      <section id="painelCalendario" class="painel-aba" hidden>
+        <header class="painel-cabecalho">
+          <h1 class="painel-titulo">Calendário</h1>
+          <p class="painel-subtitulo">Planeje sua rotina e acompanhe suas entregas no tempo.</p>
+        </header>
+
+        <div class="calendario-layout">
+          <!-- Grade do Calendário -->
+          <div class="calendario-card">
+            <div class="calendario-navegacao">
+              <h2 id="calMesAnoTexto" class="cal-mes-ano">Novembro 2026</h2>
+              <div class="cal-botoes-nav">
+                <button type="button" id="calBtnAnterior" class="cal-nav-btn" aria-label="Mês anterior">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                    <polyline points="15 18 9 12 15 6"></polyline>
+                  </svg>
+                </button>
+                <button type="button" id="calBtnHoje" class="cal-hoje-btn">Hoje</button>
+                <button type="button" id="calBtnProximo" class="cal-nav-btn" aria-label="Próximo mês">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                    <polyline points="9 18 15 12 9 6"></polyline>
+                  </svg>
+                </button>
+              </div>
+            </div>
+
+            <!-- Dias da semana -->
+            <div class="cal-dias-semana">
+              <span>Dom</span>
+              <span>Seg</span>
+              <span>Ter</span>
+              <span>Qua</span>
+              <span>Qui</span>
+              <span>Sex</span>
+              <span>Sáb</span>
+            </div>
+
+            <!-- Grade de dias -->
+            <div id="calGradeDias" class="cal-grade"></div>
+          </div>
+
+          <!-- Painel lateral de detalhes da data selecionada -->
+          <div class="cal-detalhes-card">
+            <div class="cal-detalhes-topo">
+              <span class="cal-detalhes-rotulo">Data selecionada</span>
+              <h3 id="calDataSelecionadaTitulo" class="cal-detalhes-data">Hoje</h3>
+              <p id="calDataSelecionadaSubtitulo" class="cal-detalhes-sub">0 tarefas agendadas</p>
+            </div>
+
+            <!-- Criar tarefa rápido direto para a data selecionada -->
+            <form id="calFormTarefaDia" class="cal-form-rapido" novalidate>
+              <input type="text" id="calInputTarefaDia" class="cal-input-rapido" placeholder="+ Adicionar tarefa neste dia..." autocomplete="off">
+              <button type="submit" class="cal-btn-adicionar" aria-label="Adicionar tarefa neste dia" title="Adicionar tarefa">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <line x1="12" y1="5" x2="12" y2="19"></line>
+                  <line x1="5" y1="12" x2="19" y2="12"></line>
+                </svg>
+              </button>
+            </form>
+
+            <ul id="calListaTarefasDia" class="lista-tarefas cal-lista"></ul>
+            <p id="calSemTarefasDia" class="sem-tarefas cal-sem-tarefas">Nenhuma tarefa para este dia.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==================== ABA 4: PERFIL ==================== -->
+      <section id="painelPerfil" class="painel-aba" hidden>
+        <header class="painel-cabecalho">
+          <h1 class="painel-titulo">Meu perfil</h1>
+          <p class="painel-subtitulo">Gerencie suas informações e acompanhe suas estatísticas de produtividade.</p>
+        </header>
+
+        <div class="perfil-layout">
+          <!-- Cartão de informações do usuário -->
+          <div class="perfil-card perfil-card-usuario">
+            <div class="perfil-avatar" id="perfilAvatar">
+              <span id="perfilIniciais">FL</span>
+            </div>
+            <div class="perfil-dados-usuario">
+              <h2 id="perfilNomeExibicao" class="perfil-nome-texto">Nome do Usuário</h2>
+              <p id="perfilEmailExibicao" class="perfil-email-texto">usuario@email.com</p>
+              <span class="badge-status-conta">
+                <span class="ponto-status"></span> Conta ativa
+              </span>
+            </div>
+          </div>
+
+          <!-- Métricas de produtividade -->
+          <div class="estatisticas-grid">
+            <div class="estatistica-item">
+              <div class="estatistica-icone icone-azul">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"></path>
+                  <rect x="8" y="2" width="8" height="4" rx="1" ry="1"></rect>
+                </svg>
+              </div>
+              <div class="estatistica-info">
+                <span id="statTotalTarefas" class="estatistica-valor">0</span>
+                <span class="estatistica-rotulo">Total de tarefas</span>
+              </div>
+            </div>
+
+            <div class="estatistica-item">
+              <div class="estatistica-icone icone-verde">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+                  <polyline points="22 4 12 14.01 9 11.01"></polyline>
+                </svg>
+              </div>
+              <div class="estatistica-info">
+                <span id="statConcluidas" class="estatistica-valor">0</span>
+                <span class="estatistica-rotulo">Concluídas</span>
+              </div>
+            </div>
+
+            <div class="estatistica-item">
+              <div class="estatistica-icone icone-amarelo">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <circle cx="12" cy="12" r="10"></circle>
+                  <polyline points="12 6 12 12 16 14"></polyline>
+                </svg>
+              </div>
+              <div class="estatistica-info">
+                <span id="statPendentes" class="estatistica-valor">0</span>
+                <span class="estatistica-rotulo">Pendentes</span>
+              </div>
+            </div>
+
+            <div class="estatistica-item">
+              <div class="estatistica-icone icone-vermelho">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <circle cx="12" cy="12" r="10"></circle>
+                  <line x1="12" y1="8" x2="12" y2="12"></line>
+                  <line x1="12" y1="16" x2="12.01" y2="16"></line>
+                </svg>
+              </div>
+              <div class="estatistica-info">
+                <span id="statAtrasadas" class="estatistica-valor">0</span>
+                <span class="estatistica-rotulo">Atrasadas</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Barra de progresso geral -->
+          <div class="progresso-card">
+            <div class="progresso-topo">
+              <span class="progresso-titulo">Taxa de conclusão geral</span>
+              <span id="statPorcentagemConclusao" class="progresso-valor">0%</span>
+            </div>
+            <div class="progresso-trilho">
+              <div id="statBarraProgresso" class="progresso-preenchimento"></div>
+            </div>
+          </div>
+
+          <!-- Configurações: Editar Nome e Alterar Senha -->
+          <div class="perfil-formularios-grid">
+            <div class="perfil-card">
+              <h3 class="perfil-secao-titulo">Informações pessoais</h3>
+              <form id="formPerfilNome" novalidate>
+                <div class="campo-grupo">
+                  <label for="campoPerfilNome" class="campo-label">Nome completo</label>
+                  <input type="text" id="campoPerfilNome" class="perfil-input" autocomplete="name" required>
+                </div>
+                <div class="campo-grupo">
+                  <label for="campoPerfilEmail" class="campo-label">E-mail (não editável)</label>
+                  <input type="email" id="campoPerfilEmail" class="perfil-input desabilitado" readonly disabled>
+                </div>
+                <p id="msgPerfilNome" class="mensagem-tarefa" role="status"></p>
+                <button type="submit" class="botao-acao-primario">Salvar alterações</button>
+              </form>
+            </div>
+
+            <div class="perfil-card">
+              <h3 class="perfil-secao-titulo">Segurança da conta</h3>
+              <form id="formPerfilSenha" novalidate>
+                <div class="campo-grupo">
+                  <label for="campoPerfilSenhaAtual" class="campo-label">Senha atual</label>
+                  <input type="password" id="campoPerfilSenhaAtual" class="perfil-input" autocomplete="current-password" required>
+                </div>
+                <div class="campo-grupo">
+                  <label for="campoPerfilNovaSenha" class="campo-label">Nova senha (mínimo 6 caracteres)</label>
+                  <input type="password" id="campoPerfilNovaSenha" class="perfil-input" autocomplete="new-password" required>
+                </div>
+                <p id="msgPerfilSenha" class="mensagem-tarefa" role="status"></p>
+                <button type="submit" class="botao-acao-primario">Alterar senha</button>
+              </form>
+            </div>
+          </div>
+
+        </div>
+      </section>
+
+    </main>
+  </div>
+
+  <!-- MOLDE de uma linha de tarefa: reutilizado dinamicamente -->
+  <template id="modeloTarefa">
+    <li class="tarefa-item">
+      <button type="button" class="tarefa-check" aria-label="Alternar conclusão">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+             stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <polyline points="20 6 9 17 4 12"></polyline>
+        </svg>
+      </button>
+      <span class="tarefa-titulo"></span>
+      <span class="etiqueta"></span>
+      <span class="tarefa-prazo"></span>
+      <button type="button" class="tarefa-btn-excluir" title="Excluir tarefa" aria-label="Excluir tarefa">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+             stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <polyline points="3 6 5 6 21 6"></polyline>
+          <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+          <line x1="10" y1="11" x2="10" y2="17"></line>
+          <line x1="14" y1="11" x2="14" y2="17"></line>
+        </svg>
+      </button>
+    </li>
+  </template>
+
+  <script src="../../scripts/storage.js"></script>
+  <script src="principal.js"></script>
+</body>
+
+</html>

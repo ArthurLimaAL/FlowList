@@ -4,7 +4,7 @@ const senha = document.getElementById("senha");
 const mensagemSucesso = document.getElementById("mensagemSucesso");
 const mensagemErro = document.getElementById("mensagemErro");
 
-const CAMINHO_PRINCIPAL = "../principal/principal.html";
+const CAMINHO_PRINCIPAL = "../principal/index.html";
 
 // icones de olhos 
 const botoesOlho = document.querySelectorAll(".botao-olho");

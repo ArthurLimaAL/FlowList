@@ -1,25 +1,21 @@
 {
-  "name": "studyflow",
+  "name": "flowlist",
   "version": "1.0.0",
-  "description": "",
+  "description": "Aplicativo desktop para organizar tarefas pessoais.",
+  "private": true,
   "main": "main.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-      "start": "electron ."
+    "start": "electron .",
+    "check": "node --check main.js && node --check src/scripts/storage.js && node --check src/pages/cadastro/cadastro.js && node --check src/pages/login/login.js && node --check src/pages/principal/principal.js",
+    "test": "npm run check"
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/ArthurLimaAL/StudyFlow.git"
-  },
-  "keywords": [],
-  "author": "",
   "license": "ISC",
-  "type": "commonjs",
-  "bugs": {
-    "url": "https://github.com/ArthurLimaAL/StudyFlow/issues"
+  "dependencies": {
+    "@fontsource/inter": "^5.2.6",
+    "bootstrap": "^5.3.8",
+    "bootstrap-icons": "^1.13.2"
   },
-  "homepage": "https://github.com/ArthurLimaAL/StudyFlow#readme",
   "devDependencies": {
-    "electron": "^45.0.0"
+    "electron": "^45.2.3"
   }
 }

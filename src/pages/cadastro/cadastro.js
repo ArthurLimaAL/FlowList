@@ -152,7 +152,7 @@ confirmarSenha.addEventListener("blur", () =>
   });
 });
 
-const CAMINHO_LOGIN = "../login/login.html";
+const CAMINHO_LOGIN = "../login/index.html";
 
 const form = document.getElementById("form");
 const mensagemSucesso = document.getElementById("mensagemSucesso");

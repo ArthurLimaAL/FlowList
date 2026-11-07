@@ -1,0 +1,155 @@
+// FUNÇÕES DE LOCALSTORAGE
+
+// Busca todos os usuários salvos no localStorage e, se não existir nenhum, retorna um array vazio
+function obterUsuarios() {
+    try {
+        const usuarios = localStorage.getItem("usuarios");     // tenta pegar o item armazenado
+        return JSON.parse(usuarios) || [];                     // converte o texto JSON em objeto; se for null, retorna array vazio
+    } catch (error) {
+        console.error("Erro ao ler usuários do localStorage", error);
+        return [];
+    }
+}
+
+// Salvar a lista de usuários
+function salvarUsuarios(lista) {
+    try {
+        const json = JSON.stringify(lista);     // converte o objeto em texto JSON
+        localStorage.setItem("usuarios", json);
+        console.log("Usuários salvos com sucesso!");
+    } catch (error) {
+        console.error("Erro ao salvar usuários no localStorage", error);
+    }
+}
+
+// Salvar um novo usuário
+function salvarUsuario(novoUsuario) {
+    try {
+        const usuarios = obterUsuarios();    // pega todos os usuários salvos
+        const existe = usuarios.some(u => u.email === novoUsuario.email);  // verifica se já existe um usuário com o mesmo e-mail
+
+        if (existe) {
+            return { sucesso: false, mensagem: "Este e-mail já está cadastrado." };
+        }
+
+        usuarios.push(novoUsuario);    // adiciona o novo usuário na lista
+        salvarUsuarios(usuarios);
+        return { sucesso: true, mensagem: "Usuário cadastrado com sucesso!" };
+    } catch (erro) {
+        console.error("Erro ao salvar novo usuário", erro);
+        return { sucesso: false, mensagem: "Erro ao salvar usuário." };
+    }
+}
+
+// Gera um hash (embaralha) de uma senha usando SHA-256
+async function gerarHash(senha) {
+    const encoder = new TextEncoder();   // transforma o texto da senha em bytes
+    const data = encoder.encode(senha);
+
+    const hashBuffer = await crypto.subtle.digest("SHA-256", data);  // cria o hash usando o algoritmo SHA-256
+
+    // transforma o resultado (bytes) em texto
+    const hashArray = Array.from(new Uint8Array(hashBuffer));
+    const hashHex = hashArray.map(b => b.toString(16).padStart(2, "0")).join("");
+    return hashHex;
+}
+
+// AUTENTICAR USUÁRIO e-mail e senha
+
+async function autenticarUsuario(email, senhaDigitada) {
+    const usuarios = obterUsuarios();                      
+    const senhaHash = await gerarHash(senhaDigitada);      
+
+
+    const usuario = usuarios.find(
+        (u) => u.email === email && u.senha === senhaHash
+    );
+
+   
+    return usuario || null;
+}
+// Guarda quem acabou de fazer login
+function salvarUsuarioLogado(usuario) {
+    const dados = { nome: usuario.nome, email: usuario.email };
+    localStorage.setItem("usuarioLogado", JSON.stringify(dados));
+}
+
+function obterUsuarioLogado() {
+    try {
+        return JSON.parse(localStorage.getItem("usuarioLogado"));
+    } catch (error) {
+        return null;
+    }
+}
+
+
+// Apaga o usuário logado (usado no botão Sair)
+function removerUsuarioLogado() {
+    localStorage.removeItem("usuarioLogado");
+}
+
+// ---------- TAREFAS ----------
+
+// Busca as tarefas de TODOS os usuários (uso interno)
+function obterTodasTarefas() {
+    try {
+        return JSON.parse(localStorage.getItem("tarefas")) || [];
+    } catch (error) {
+        console.error("Erro ao ler tarefas do localStorage", error);
+        return [];
+    }
+}
+
+// Busca só as tarefas de quem está logado
+function obterTarefas() {
+    const usuario = obterUsuarioLogado();
+    if (!usuario) return [];
+
+    return obterTodasTarefas().filter((t) => t.email === usuario.email);
+}
+
+// Salva uma nova tarefa para quem está logado
+function salvarTarefa(dados) {
+    const usuario = obterUsuarioLogado();
+    if (!usuario) {
+        return { sucesso: false, mensagem: "Nenhum usuário logado." };
+    }
+
+    try {
+        const tarefas = obterTodasTarefas();
+
+        tarefas.push({
+            id: Date.now(),              // número único para identificar a tarefa
+            email: usuario.email,        
+            titulo: dados.titulo,
+            prazo: dados.prazo,          
+            prioridade: dados.prioridade,
+            concluida: false
+        });
+
+        localStorage.setItem("tarefas", JSON.stringify(tarefas));
+        return { sucesso: true, mensagem: "Tarefa criada!" };
+    } catch (error) {
+        console.error("Erro ao salvar tarefa", error);
+        return { sucesso: false, mensagem: "Erro ao salvar tarefa." };
+    }
+}
+
+// Marca ou desmarca uma tarefa como concluída
+function alternarConclusaoTarefa(id) {
+    const usuario = obterUsuarioLogado();
+    if (!usuario) return false;
+
+    try {
+        const tarefas = obterTodasTarefas();
+        const tarefa = tarefas.find((t) => t.id === id && t.email === usuario.email);
+        if (!tarefa) return false;
+
+        tarefa.concluida = !tarefa.concluida;
+        localStorage.setItem("tarefas", JSON.stringify(tarefas));
+        return true;
+    } catch (error) {
+        console.error("Erro ao atualizar tarefa", error);
+        return false;
+    }
+}

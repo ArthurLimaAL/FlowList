@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- Segurança do Electron (CSP): a página só pode carregar arquivos do próprio app-->
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'">
+
+  <title>Entrar | FlowList</title>
+
+  <!--Bootstrap local-->
+  <link rel="stylesheet" href="../../node_modules/bootstrap/dist/css/bootstrap.min.css">
+  <link rel="stylesheet" href="../../node_modules/bootstrap-icons/font/bootstrap-icons.css">
+
+  <!-- Fonte local. Normal, médio, seminegrito e negrito -->
+  <link rel="stylesheet" href="../../node_modules/@fontsource/inter/400.css">
+  <link rel="stylesheet" href="../../node_modules/@fontsource/inter/600.css">
+  <link rel="stylesheet" href="../../node_modules/@fontsource/inter/700.css">
+
+  
+  <link rel="stylesheet" href="../cadastro/cadastro.css">
+</head>
+
+<body>
+  
+  <div class="barra-topo"></div>
+
+  <div id="mensagemSucesso" class="mensagem"></div>
+  <div id="mensagemErro" class="mensagem erro"></div>
+
+  
+  <div class="cartao">
+
+    <!-- PAINEL ESQUERDO -->
+    <section class="painel-apresentacao">
+      <div class="marca">
+        <span class="marca-icone">
+          <i class="bi bi-check-lg" aria-hidden="true"></i>
+        </span>
+        <span class="marca-nome">FlowList</span>
+      </div>
+
+      <h1 class="apresentacao-titulo">Organize seu dia,<br>uma tarefa por vez.</h1>
+      <p class="apresentacao-texto">Tarefas, prazos e compromissos em um só lugar.</p>
+    </section>
+
+    <!-- PAINEL DIREITO -->
+    <main class="painel-formulario">
+      <div class="formulario-conteudo">
+        <h2 class="formulario-titulo">Bem-vindo(a) de volta</h2>
+        <p class="formulario-subtitulo">Entre para ver suas tarefas.</p>
+
+        <form id="form" novalidate>
+
+          <div class="campo">
+            <label for="email" class="form-label">E-mail</label>
+            <input id="email" name="email" type="email" class="form-control" autocomplete="email">
+            <span class="error"></span>
+          </div>
+
+          <div class="campo">
+            <label for="senha" class="form-label">Senha</label>
+            <div class="campo-senha">
+              
+              <input id="senha" name="senha" type="password" class="form-control" autocomplete="current-password">
+              <button type="button" class="botao-olho" data-alvo="senha" aria-label="Mostrar senha">
+                <i class="bi bi-eye olho-aberto oculto" aria-hidden="true"></i>
+
+                <i class="bi bi-eye-slash olho-fechado" aria-hidden="true"></i>
+
+              </button>
+            </div>
+            <span class="error"></span>
+          </div>
+
+          <button type="submit" class="btn botao-principal">Entrar</button>
+        </form>
+
+        <p class="link-login">Não tem conta? <a href="../cadastro/cadastro.html">Cadastre-se</a></p>
+      </div>
+    </main>
+  </div>
+
+  <script src="../storage.js"></script>
+  <script src="login.js"></script>
+</body>
+
+</html>

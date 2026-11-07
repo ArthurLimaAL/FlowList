@@ -6,7 +6,7 @@
   "main": "main.js",
   "scripts": {
     "start": "electron .",
-    "check": "node --check main.js && node --check src/scripts/storage.js && node --check src/pages/cadastro/cadastro.js && node --check src/pages/login/login.js && node --check src/pages/principal/principal.js",
+    "check": "node --check main.js && node --check preload.js && node --check src/scripts/storage.js && node --check src/pages/cadastro/cadastro.js && node --check src/pages/login/login.js && node --check src/pages/principal/principal.js",
     "test": "npm run check"
   },
   "license": "ISC",

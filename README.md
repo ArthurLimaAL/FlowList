@@ -41,6 +41,7 @@ src/
   scripts/storage.js            Persistência local de usuários e tarefas
   styles/auth.css               Estilos compartilhados por cadastro e login
 main.js                         Inicialização do Electron
+preload.js                      Ponte segura (contextBridge) entre Electron e o navegador
 package.json                    Dependências e comandos únicos do projeto
 ```
 

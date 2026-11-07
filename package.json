@@ -1,0 +1,25 @@
+{
+  "name": "studyflow",
+  "version": "1.0.0",
+  "description": "",
+  "main": "main.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+      "start": "electron ."
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ArthurLimaAL/StudyFlow.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/ArthurLimaAL/StudyFlow/issues"
+  },
+  "homepage": "https://github.com/ArthurLimaAL/StudyFlow#readme",
+  "devDependencies": {
+    "electron": "^45.0.0"
+  }
+}

@@ -134,3 +134,22 @@ function salvarTarefa(dados) {
         return { sucesso: false, mensagem: "Erro ao salvar tarefa." };
     }
 }
+
+// Marca ou desmarca uma tarefa como concluída
+function alternarConclusaoTarefa(id) {
+    const usuario = obterUsuarioLogado();
+    if (!usuario) return false;
+
+    try {
+        const tarefas = obterTodasTarefas();
+        const tarefa = tarefas.find((t) => t.id === id && t.email === usuario.email);
+        if (!tarefa) return false;
+
+        tarefa.concluida = !tarefa.concluida;
+        localStorage.setItem("tarefas", JSON.stringify(tarefas));
+        return true;
+    } catch (error) {
+        console.error("Erro ao atualizar tarefa", error);
+        return false;
+    }
+}

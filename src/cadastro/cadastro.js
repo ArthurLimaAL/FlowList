@@ -192,7 +192,7 @@ form.addEventListener("submit", async (e) => {
 
   const novoUsuario = {
     nome: nome.value.trim(),
-    email: email.value.trim(),
+    email: email.value.trim().toLowerCase(),
     senha: senhaHash,
   };
 

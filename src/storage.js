@@ -26,7 +26,7 @@ function salvarUsuarios(lista) {
 function salvarUsuario(novoUsuario) {
     try {
         const usuarios = obterUsuarios();    // pega todos os usuários salvos
-        const existe = usuarios.some(u => u.email === novoUsuario.email);  // verifica se já existe um usuário com o mesmo e-mail
+        const existe = usuarios.some(u => u.email.toLowerCase() === novoUsuario.email.toLowerCase());  // verifica se já existe um usuário com o mesmo e-mail
 
         if (existe) {
             return { sucesso: false, mensagem: "Este e-mail já está cadastrado." };
@@ -41,7 +41,7 @@ function salvarUsuario(novoUsuario) {
     }
 }
 
-// Gera um hash (embaralha) de uma senha usando SHA-256
+// Gera um hash de uma senha usando SHA-256
 async function gerarHash(senha) {
     const encoder = new TextEncoder();   // transforma o texto da senha em bytes
     const data = encoder.encode(senha);
@@ -55,14 +55,13 @@ async function gerarHash(senha) {
 }
 
 // AUTENTICAR USUÁRIO e-mail e senha
-
 async function autenticarUsuario(email, senhaDigitada) {
     const usuarios = obterUsuarios();                      
     const senhaHash = await gerarHash(senhaDigitada);      
 
 
     const usuario = usuarios.find(
-        (u) => u.email === email && u.senha === senhaHash
+        (u) => u.email.toLowerCase() === email.toLowerCase() && u.senha === senhaHash
     );
 
    
@@ -88,7 +87,6 @@ function removerUsuarioLogado() {
     localStorage.removeItem("usuarioLogado");
 }
 
-// ---------- TAREFAS ----------
 
 // Busca as tarefas de TODOS os usuários (uso interno)
 function obterTodasTarefas() {
@@ -119,7 +117,7 @@ function salvarTarefa(dados) {
         const tarefas = obterTodasTarefas();
 
         tarefas.push({
-            id: Date.now(),              // número único para identificar a tarefa
+            id: Date.now(),              
             email: usuario.email,        
             titulo: dados.titulo,
             prazo: dados.prazo,          

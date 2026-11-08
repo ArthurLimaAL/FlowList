@@ -1,15 +1,15 @@
 const usuario = obterUsuarioLogado();
 
-if (usuario) {
-  // pega só o primeiro nome (ex.: "Ana Souza" vira "Ana")
-  document.getElementById("nomeUsuario").textContent = usuario.nome.split(" ")[0];
-} else {
+if (!usuario) {
   // ninguém logado: volta para o login
-  window.location.href = "../login/login.html";
+  window.location.replace("../login/login.html");
+  throw new Error("Nenhum usuário logado.");   // interrompe o resto do arquivo
 }
 
-//  PRAZO 
+// pega só o primeiro nome
+document.getElementById("nomeUsuario").textContent = usuario.nome.split(" ")[0];
 
+//  PRAZO 
 const botaoPrazo = document.getElementById("botaoPrazo");
 const campoPrazo = document.getElementById("campoPrazo");
 const textoPrazo = document.getElementById("textoPrazo");
@@ -31,7 +31,7 @@ function dataDeHoje() {
   return `${ano}-${mes}-${dia}`;
 }
 
-// Clicar no botão abre o calendário escondido embaixo dele
+//  calendário escondido 
 botaoPrazo.addEventListener("click", () => {
   campoPrazo.min = dataDeHoje();   
   campoPrazo.showPicker();
@@ -43,7 +43,6 @@ campoPrazo.addEventListener("change", () => {
 });
 
 // CRIAR TAREFA
-
 const formTarefa = document.getElementById("formTarefa");
 const campoTarefa = document.getElementById("campoTarefa");
 const mensagemTarefa = document.getElementById("mensagemTarefa");
@@ -71,7 +70,7 @@ formTarefa.addEventListener("submit", (e) => {
   const escolhida = formTarefa.querySelector('input[name="prioridade"]:checked');
   const prioridade = escolhida ? escolhida.value : "media";
 
-  // segunda proteção: não aceita data que já passou
+  // não aceita data que já passou
   if (prazo < dataDeHoje()) {
     mostrarMensagemTarefa("Escolha uma data de hoje em diante.", false);
     return;
@@ -80,22 +79,16 @@ formTarefa.addEventListener("submit", (e) => {
   const resultado = salvarTarefa({ titulo, prazo, prioridade });
 
   if (resultado.sucesso) {
-    formTarefa.reset();                 // limpa campo, data e prioridade
-    textoPrazo.textContent = "Prazo";   // o reset não mexe no texto do botão
+    formTarefa.reset();                 
+    textoPrazo.textContent = "Prazo";  
     mostrarMensagemTarefa("Tarefa criada!", true);
-    carregarInicio();                   // atualiza a tela com a tarefa nova
+    carregarInicio();                   
   } else {
     mostrarMensagemTarefa(resultado.mensagem, false);
   }
 });
 
-// SAIR 
-document.getElementById("botaoSair").addEventListener("click", () => {
-  removerUsuarioLogado();
-});
-
 //  LISTA DE TAREFAS
-
 const estadoVazio = document.getElementById("estadoVazio");
 const areaTarefas = document.getElementById("areaTarefas");
 const slotFormulario = document.getElementById("slotFormulario");

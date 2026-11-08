@@ -1,5 +1,6 @@
 const { app, BrowserWindow, ipcMain } = require("electron");
 const path = require("path");
+const fs = require("fs");
 
 function criarJanela() {
   const janela = new BrowserWindow({
@@ -39,6 +40,11 @@ function criarJanela() {
 // Devolve a versão do app
 ipcMain.handle("app:versao", () => {
   return app.getVersion();
+});
+
+// Devolve o HTML do menu lateral 
+ipcMain.handle("menu:html", () => {
+  return fs.readFileSync(path.join(__dirname, "src", "componentes", "menu.html"), "utf8");
 });
 
 // Fecha o aplicativo inteiro

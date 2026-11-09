@@ -1,0 +1,955 @@
+
+.pf {
+    --pf-card: var(--card, #1f2332);
+    --pf-borda: var(--borda, #2c2f3a);
+    --pf-muted: var(--muted, #8b90a3);
+    --pf-texto: var(--text, #e8eaf0);
+    --pf-azul: var(--azul, #3b82f6);
+    --pf-azul-claro: var(--blue, #8bc4ff);
+    --pf-azul-claro-hover: var(--blue-hover, #a3d2ff);
+    --pf-alta: #f472a0;
+    --pf-media: #f0b840;
+    --pf-baixa: #34d399;
+    --pf-trilho: #2a2f44;
+
+    padding: 24px 32px 24px;
+    color: var(--pf-texto);
+
+    /* As caixas de baixo crescem até o fim da janela */
+    min-height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.pf [hidden] {
+    display: none !important;
+}
+
+.pf-titulo {
+    font-size: 30px;
+    font-weight: 700;
+    margin: 0;
+    line-height: 1.15;
+}
+
+.pf-sub {
+    color: var(--pf-muted);
+    font-size: 15px;
+    margin: 4px 0 18px;
+}
+
+.pf-card {
+    background: var(--pf-card);
+    border: 1px solid var(--pf-borda);
+    border-radius: 18px;
+}
+
+/* ---------- Cabeçalho ---------- */
+.pf-cab {
+    display: flex;
+    align-items: center;
+    gap: 24px;
+    padding: 22px 28px;
+    margin-bottom: 16px;
+}
+
+.pf-avatar {
+    width: 88px;
+    height: 88px;
+    border-radius: 50%;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 32px;
+    font-weight: 700;
+    color: #fff;
+    background: linear-gradient(135deg, #3b82f6, #6366f1);
+}
+
+.pf-cab-info {
+    flex: 1;
+    min-width: 0;
+}
+
+.pf-nome {
+    font-size: 26px;
+    font-weight: 700;
+    margin: 0;
+    line-height: 1.2;
+    overflow-wrap: anywhere;
+}
+
+.pf-email {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    color: var(--pf-muted);
+    font-size: 15px;
+    margin-top: 4px;
+}
+
+.pf-email svg {
+    width: 18px;
+    height: 18px;
+}
+
+.pf-chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 12px;
+}
+
+.pf-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 13px;
+    padding: 6px 13px;
+    border-radius: 999px;
+    background: var(--pf-trilho);
+    color: var(--pf-muted);
+}
+
+.pf-chip svg {
+    width: 15px;
+    height: 15px;
+}
+
+.pf-chip-alerta {
+    background: #3a1f2b;
+    color: var(--pf-alta);
+}
+
+.pf-chip-ok {
+    background: #12302a;
+    color: var(--pf-baixa);
+}
+
+.pf-cab>.pf-btn {
+    align-self: flex-start;
+}
+
+/* ---------- Botões e campos ---------- */
+.pf-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 9px;
+    font: inherit;
+    font-size: 15px;
+    font-weight: 600;
+    padding: 11px 20px;
+    border-radius: 12px;
+    border: 1px solid #3a3f4e;
+    background: transparent;
+    color: var(--pf-texto);
+    cursor: pointer;
+    transition: background-color .15s ease, border-color .15s ease;
+}
+
+.pf-btn:hover {
+    background: rgba(255, 255, 255, 0.06);
+}
+
+.pf-btn svg {
+    width: 17px;
+    height: 17px;
+}
+
+.pf-btn-contorno {
+    border-color: #4a5063;
+}
+
+.pf-btn-azul {
+    background: var(--pf-azul);
+    border-color: var(--pf-azul);
+    color: #fff;
+}
+
+.pf-btn-azul:hover {
+    background: #2563eb;
+}
+
+/* Azul claro com texto escuro (Alterar senha / Salvar senha) */
+.pf-btn-claro {
+    background: var(--pf-azul-claro);
+    border-color: var(--pf-azul-claro);
+    color: #0f111a;
+}
+
+.pf-btn-claro:hover {
+    background: var(--pf-azul-claro-hover);
+    border-color: var(--pf-azul-claro-hover);
+}
+
+.pf-btn-cinza {
+    background: #2a2f44;
+    border-color: #2a2f44;
+}
+
+.pf-btn-cinza:hover {
+    background: #343a52;
+}
+
+.pf-link {
+    background: none;
+    border: 0;
+    padding: 0;
+    font: inherit;
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--pf-azul-claro);
+    cursor: pointer;
+}
+
+.pf-link:hover {
+    text-decoration: underline;
+}
+
+.pf-btn:focus-visible,
+.pf-link:focus-visible,
+.pf-input:focus-visible,
+.pf-olho:focus-visible,
+.pf-modal-fechar:focus-visible {
+    outline: 2px solid var(--pf-azul-claro);
+    outline-offset: 2px;
+}
+
+.pf-input {
+    width: 100%;
+    font: inherit;
+    font-size: 15px;
+    padding: 12px 14px;
+    border-radius: 10px;
+    border: 1px solid #2a2f44;
+    background: #171a27;
+    color: var(--pf-texto);
+}
+
+.pf-input:focus {
+    border-color: var(--pf-azul-claro);
+}
+
+.pf-form-nome {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    align-items: center;
+}
+
+.pf-form-nome .pf-input {
+    flex: 1;
+    min-width: 220px;
+}
+
+.pf-label {
+    display: block;
+    font-size: 12.5px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: .04em;
+    color: var(--pf-muted);
+    margin: 16px 0 7px;
+}
+
+.pf-acoes {
+    display: flex;
+    gap: 10px;
+    margin-top: 14px;
+}
+
+.pf-msg {
+    min-height: 18px;
+    font-size: 14px;
+    margin: 10px 0 0;
+    color: var(--pf-baixa);
+}
+
+.pf-msg-erro {
+    color: var(--pf-alta);
+}
+
+/* mensagem vazia não ocupa espaço */
+.pf-msg:empty {
+    display: none;
+}
+
+.pf-vazio {
+    margin: 0 0 20px;
+    padding: 14px 20px;
+    border-radius: 12px;
+    border: 1px dashed #3a4058;
+    color: var(--pf-muted);
+    font-size: 15px;
+}
+
+/* ---------- Estatísticas ---------- */
+.pf-stats {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 16px;
+    margin-bottom: 16px;
+}
+
+.pf-stat {
+    padding: 20px 24px;
+}
+
+.pf-stat-rotulo {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--pf-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+}
+
+.pf-stat-num {
+    font-size: 40px;
+    font-weight: 700;
+    line-height: 1.1;
+    margin: 8px 0 4px;
+}
+
+.pf-stat-desc {
+    font-size: 15px;
+    color: var(--pf-muted);
+}
+
+.pf-cor-media {
+    color: var(--pf-media);
+}
+
+.pf-cor-baixa {
+    color: var(--pf-baixa);
+}
+
+.pf-cor-azul {
+    color: var(--pf-azul-claro);
+}
+
+.pf-progresso {
+    height: 10px;
+    border-radius: 99px;
+    background: var(--pf-trilho);
+    margin-top: 12px;
+    overflow: hidden;
+}
+
+.pf-progresso i {
+    display: block;
+    height: 100%;
+    width: 0;
+    border-radius: 99px;
+    background: var(--pf-azul-claro);
+}
+
+/* ---------- Duas caixas lado a lado ---------- */
+.pf-duas {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    gap: 16px;
+    flex: 1 1 auto;
+}
+
+.pf-box {
+    padding: 22px 26px;
+}
+
+.pf-box-titulo {
+    font-size: 19px;
+    font-weight: 700;
+    margin: 0 0 18px;
+}
+
+.pf-prio {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin-bottom: 15px;
+    font-size: 15px;
+}
+
+.pf-prio-nome {
+    width: 64px;
+    color: var(--pf-texto);
+}
+
+.pf-barra {
+    flex: 1;
+    height: 10px;
+    border-radius: 99px;
+    background: var(--pf-trilho);
+    overflow: hidden;
+}
+
+.pf-barra i {
+    display: block;
+    height: 100%;
+    width: 0;
+    border-radius: 99px;
+}
+
+.pf-prio b {
+    width: 28px;
+    text-align: right;
+    font-size: 17px;
+}
+
+.pf-fundo-alta {
+    background: var(--pf-alta);
+}
+
+.pf-fundo-media {
+    background: var(--pf-media);
+}
+
+.pf-fundo-baixa {
+    background: var(--pf-baixa);
+}
+
+.pf-dica {
+    margin: 10px 0 0;
+    font-size: 14px;
+    color: var(--pf-muted);
+}
+
+/* ---------- Minha conta: só a senha ---------- */
+.pf-senha-linha {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+}
+
+.pf-senha-icone {
+    width: 50px;
+    height: 50px;
+    border-radius: 13px;
+    background: #282d40;
+    color: var(--pf-texto);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.pf-senha-info {
+    flex: 1;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.pf-senha-rotulo {
+    font-size: 17px;
+    font-weight: 500;
+}
+
+.pf-senha-pontos {
+    color: var(--pf-muted);
+    letter-spacing: 3px;
+    font-size: 15px;
+}
+
+.pf-senha-linha .pf-btn-claro {
+    padding: 12px 22px;
+    font-size: 15px;
+    flex-shrink: 0;
+}
+
+.pf-senha-ajuda {
+    margin: 16px 0 0;
+    font-size: 14px;
+    color: var(--pf-muted);
+}
+
+/* ---------- Janela de alterar senha ---------- */
+.pf-modal {
+    position: fixed;
+    inset: 0;
+    z-index: 2000;
+    /* fica por cima da barra do topo e do menu */
+    background: rgba(5, 6, 10, 0.65);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    animation: pfFundoEntra .15s ease-out;
+}
+
+.pf-modal-caixa {
+    width: min(520px, 100%);
+    max-height: calc(100vh - 40px);
+    overflow-y: auto;
+    background: #1e2232;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 20px;
+    padding: 28px 30px 26px;
+    box-shadow: 0 24px 60px rgba(0, 0, 0, 0.5);
+    animation: pfCaixaEntra .18s ease-out;
+}
+
+.pf-modal-topo {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+}
+
+.pf-modal-titulo {
+    font-size: 22px;
+    font-weight: 700;
+    margin: 0;
+}
+
+.pf-modal-fechar {
+    width: 36px;
+    height: 36px;
+    border-radius: 10px;
+    border: 0;
+    background: transparent;
+    color: var(--pf-muted);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+}
+
+.pf-modal-fechar:hover {
+    background: rgba(255, 255, 255, 0.06);
+    color: var(--pf-texto);
+}
+
+.pf-modal-sub {
+    margin: 6px 0 4px;
+    font-size: 14.5px;
+    color: var(--pf-muted);
+}
+
+.pf-campo-senha {
+    position: relative;
+}
+
+.pf-campo-senha .pf-input {
+    padding-right: 48px;
+}
+
+.pf-olho {
+    position: absolute;
+    top: 50%;
+    right: 8px;
+    transform: translateY(-50%);
+    width: 34px;
+    height: 34px;
+    border: 0;
+    border-radius: 8px;
+    background: transparent;
+    color: var(--pf-muted);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+}
+
+.pf-olho:hover {
+    color: var(--pf-texto);
+    background: rgba(255, 255, 255, 0.05);
+}
+
+.pf-modal-acoes {
+    justify-content: flex-end;
+    margin-top: 24px;
+}
+
+@keyframes pfFundoEntra {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes pfCaixaEntra {
+    from {
+        opacity: 0;
+        transform: translateY(8px) scale(.98);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+/* ---------- Janela baixa: tudo mais compacto para não rolar ---------- */
+@media (max-height: 820px) {
+    .pf {
+        padding: 18px 28px 18px;
+    }
+
+    .pf-titulo {
+        font-size: 26px;
+    }
+
+    .pf-sub {
+        font-size: 14px;
+        margin: 2px 0 14px;
+    }
+
+    .pf-cab {
+        padding: 16px 22px;
+        gap: 18px;
+        margin-bottom: 12px;
+    }
+
+    .pf-avatar {
+        width: 70px;
+        height: 70px;
+        font-size: 26px;
+    }
+
+    .pf-nome {
+        font-size: 22px;
+    }
+
+    .pf-email {
+        font-size: 14px;
+        margin-top: 2px;
+    }
+
+    .pf-chips {
+        margin-top: 8px;
+    }
+
+    .pf-chip {
+        font-size: 12.5px;
+        padding: 4px 11px;
+    }
+
+    .pf-cab>.pf-btn {
+        padding: 9px 16px;
+        font-size: 14px;
+    }
+
+    .pf-stats {
+        gap: 12px;
+        margin-bottom: 12px;
+    }
+
+    .pf-stat {
+        padding: 14px 18px;
+    }
+
+    .pf-stat-rotulo {
+        font-size: 12px;
+    }
+
+    .pf-stat-num {
+        font-size: 32px;
+        margin: 4px 0 2px;
+    }
+
+    .pf-stat-desc {
+        font-size: 13px;
+    }
+
+    .pf-progresso {
+        margin-top: 8px;
+        height: 8px;
+    }
+
+    .pf-duas {
+        gap: 12px;
+    }
+
+    .pf-box {
+        padding: 16px 20px;
+    }
+
+    .pf-box-titulo {
+        font-size: 17px;
+        margin-bottom: 12px;
+    }
+
+    .pf-prio {
+        margin-bottom: 10px;
+        font-size: 14px;
+    }
+
+    .pf-dica {
+        margin-top: 4px;
+        font-size: 13px;
+    }
+
+    .pf-senha-icone {
+        width: 44px;
+        height: 44px;
+    }
+
+    .pf-senha-rotulo {
+        font-size: 15px;
+    }
+
+    .pf-senha-linha .pf-btn-claro {
+        padding: 10px 18px;
+        font-size: 14px;
+    }
+
+    .pf-senha-ajuda {
+        margin-top: 12px;
+        font-size: 13px;
+    }
+}
+
+/* ---------- Janela média (ex.: tamanho padrão do app) ---------- */
+@media (max-width: 1250px) {
+    .pf {
+        padding: 26px 26px 26px;
+    }
+
+    .pf-titulo {
+        font-size: 28px;
+    }
+
+    .pf-sub {
+        font-size: 15px;
+        margin-bottom: 18px;
+    }
+
+    .pf-cab {
+        padding: 22px 24px;
+        gap: 20px;
+        margin-bottom: 16px;
+    }
+
+    .pf-avatar {
+        width: 84px;
+        height: 84px;
+        font-size: 30px;
+    }
+
+    .pf-nome {
+        font-size: 24px;
+    }
+
+    .pf-email {
+        font-size: 15px;
+    }
+
+    .pf-chip {
+        font-size: 13px;
+        padding: 6px 12px;
+    }
+
+    .pf-stats {
+        gap: 14px;
+        margin-bottom: 16px;
+    }
+
+    .pf-stat {
+        padding: 20px 20px;
+    }
+
+    .pf-stat-rotulo {
+        font-size: 12.5px;
+    }
+
+    .pf-stat-num {
+        font-size: 36px;
+        margin: 8px 0 4px;
+    }
+
+    .pf-stat-desc {
+        font-size: 14px;
+    }
+
+    .pf-duas {
+        gap: 14px;
+    }
+
+    .pf-box {
+        padding: 22px 22px;
+    }
+
+    .pf-box-titulo {
+        font-size: 18px;
+        margin-bottom: 18px;
+    }
+
+    .pf-prio {
+        font-size: 15px;
+        margin-bottom: 16px;
+        gap: 12px;
+    }
+
+    .pf-prio-nome {
+        width: 56px;
+    }
+
+    .pf-senha-linha {
+        flex-wrap: wrap;
+        gap: 14px;
+    }
+
+    .pf-senha-icone {
+        width: 48px;
+        height: 48px;
+    }
+
+    .pf-senha-linha .pf-btn-claro {
+        padding: 11px 20px;
+        font-size: 15px;
+    }
+}
+
+/* ---------- Janela bem baixa (perto do tamanho mínimo do app) ---------- */
+@media (max-height: 680px) {
+    .pf {
+        padding: 14px 22px 14px;
+    }
+
+    .pf-titulo {
+        font-size: 22px;
+    }
+
+    .pf-sub {
+        font-size: 13px;
+        margin: 2px 0 10px;
+    }
+
+    .pf-cab {
+        padding: 12px 18px;
+        gap: 14px;
+        margin-bottom: 10px;
+    }
+
+    .pf-avatar {
+        width: 56px;
+        height: 56px;
+        font-size: 21px;
+    }
+
+    .pf-nome {
+        font-size: 19px;
+    }
+
+    .pf-email {
+        font-size: 13px;
+    }
+
+    .pf-chips {
+        margin-top: 6px;
+        gap: 6px;
+    }
+
+    .pf-chip {
+        font-size: 12px;
+        padding: 3px 10px;
+    }
+
+    .pf-cab>.pf-btn {
+        padding: 7px 13px;
+        font-size: 13px;
+    }
+
+    .pf-stats {
+        gap: 10px;
+        margin-bottom: 10px;
+    }
+
+    .pf-stat {
+        padding: 10px 14px;
+    }
+
+    .pf-stat-rotulo {
+        font-size: 11px;
+    }
+
+    .pf-stat-num {
+        font-size: 26px;
+        margin: 2px 0 0;
+    }
+
+    .pf-stat-desc {
+        font-size: 12px;
+    }
+
+    .pf-progresso {
+        margin-top: 6px;
+        height: 6px;
+    }
+
+    .pf-duas {
+        gap: 10px;
+    }
+
+    .pf-box {
+        padding: 12px 16px;
+    }
+
+    .pf-box-titulo {
+        font-size: 15px;
+        margin-bottom: 10px;
+    }
+
+    .pf-prio {
+        margin-bottom: 7px;
+        font-size: 13px;
+    }
+
+    .pf-barra {
+        height: 8px;
+    }
+
+    .pf-dica {
+        font-size: 12px;
+        margin-top: 2px;
+    }
+
+    .pf-senha-linha {
+        gap: 10px;
+    }
+
+    .pf-senha-icone {
+        width: 38px;
+        height: 38px;
+        border-radius: 10px;
+    }
+
+    .pf-senha-icone svg {
+        width: 19px;
+        height: 19px;
+    }
+
+    .pf-senha-rotulo {
+        font-size: 14px;
+    }
+
+    .pf-senha-pontos {
+        font-size: 13px;
+    }
+
+    .pf-senha-linha .pf-btn-claro {
+        padding: 8px 14px;
+        font-size: 13px;
+    }
+
+    .pf-senha-ajuda {
+        margin-top: 8px;
+        font-size: 12px;
+    }
+}
+
+@media (max-width: 760px) {
+    .pf-stats {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .pf-duas {
+        grid-template-columns: 1fr;
+    }
+}

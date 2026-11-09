@@ -4,7 +4,7 @@ const senha = document.getElementById("senha");
 const mensagemSucesso = document.getElementById("mensagemSucesso");
 const mensagemErro = document.getElementById("mensagemErro");
 
-const CAMINHO_PRINCIPAL = "../principal/index.html";
+const CAMINHO_PRINCIPAL = "../principal/principal.html";
 
 // icones de olhos 
 const botoesOlho = document.querySelectorAll(".botao-olho");
@@ -102,7 +102,14 @@ form.addEventListener("submit", async (e) => {
   }
 
   // Confere e-mail e senha no storage.js.
-  const usuario = await autenticarUsuario(email.value.trim(), senha.value.trim());
+  let usuario;
+  try {
+    usuario = await autenticarUsuario(email.value.trim(), senha.value.trim());
+  } catch (erro) {
+    console.error("Erro ao autenticar usuário", erro);
+    mostrarMensagem(mensagemErro, "Não foi possível autenticar agora. Tente novamente.", 3000);
+    return;
+  }
 
      if (usuario) {
     salvarUsuarioLogado(usuario);   // guarda quem entrou, para a tela principal ler

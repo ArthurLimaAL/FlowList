@@ -6,23 +6,23 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
   <!-- Segurança do Electron (CSP): a página só pode carregar arquivos do próprio app-->
-  <meta http-equiv="Content-Security-Policy" content="default-src 'self'">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; style-src-attr 'unsafe-inline'; img-src 'self' data:; font-src 'self'; object-src 'none'; base-uri 'none'; form-action 'self'">
 
  
   <title>Cadastre-se | FlowList</title>
 
   <!-- Bootstrap local  -->
-  <link rel="stylesheet" href="../../../node_modules/bootstrap/dist/css/bootstrap.min.css">
-  <link rel="stylesheet" href="../../../node_modules/bootstrap-icons/font/bootstrap-icons.css">
+  <link rel="stylesheet" href="../../node_modules/bootstrap/dist/css/bootstrap.min.css">
+  <link rel="stylesheet" href="../../node_modules/bootstrap-icons/font/bootstrap-icons.css">
 
   <!-- Fonte local. Normal, médio, seminegrito e negrito -->
-  <link rel="stylesheet" href="../../../node_modules/@fontsource/inter/400.css">
-  <link rel="stylesheet" href="../../../node_modules/@fontsource/inter/500.css">
-  <link rel="stylesheet" href="../../../node_modules/@fontsource/inter/600.css">
-  <link rel="stylesheet" href="../../../node_modules/@fontsource/inter/700.css">
+  <link rel="stylesheet" href="../../node_modules/@fontsource/inter/400.css">
+  <link rel="stylesheet" href="../../node_modules/@fontsource/inter/500.css">
+  <link rel="stylesheet" href="../../node_modules/@fontsource/inter/600.css">
+  <link rel="stylesheet" href="../../node_modules/@fontsource/inter/700.css">
 
  
-  <link rel="stylesheet" href="../../styles/auth.css">
+  <link rel="stylesheet" href="cadastro.css">
 </head>
 
 <body>
@@ -36,9 +36,8 @@
 
     <section class="painel-apresentacao">
 
-      <!-- Logo e nome -->
       <div class="marca">
-        <!-- ícone de check -->
+        
         <span class="marca-icone">
           <i class="bi bi-check-lg" aria-hidden="true"></i>
         </span>
@@ -117,7 +116,7 @@
     </main>
   </div>
 
-  <script src="../../scripts/storage.js"></script>
+  <script src="../storage.js"></script>
   <script src="cadastro.js"></script>
 </body>
 

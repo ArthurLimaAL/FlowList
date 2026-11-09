@@ -37,9 +37,10 @@ function pegarErro(input) {
 }
 
 
-const regraNome = /^[A-Za-zÀ-ÖØ-öø-ÿ]{2,}(?:\s+[A-Za-zÀ-ÖØ-öø-ÿ]{2,})+$/;
+// As regras de nome e senha ficam no storage.js
+const regraNome = REGRA_NOME_COMPLETO;
 const regraEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-const regraSenha = /^(?=.*[A-Z])(?=.*\d)(?=.*[^A-Za-z0-9]).{8,}$/;
+const regraSenha = REGRA_SENHA_FORTE;
 
 
 const nome = document.getElementById("nome");
@@ -152,7 +153,7 @@ confirmarSenha.addEventListener("blur", () =>
   });
 });
 
-const CAMINHO_LOGIN = "../login/index.html";
+const CAMINHO_LOGIN = "../login/login.html";
 
 const form = document.getElementById("form");
 const mensagemSucesso = document.getElementById("mensagemSucesso");
@@ -188,12 +189,20 @@ form.addEventListener("submit", async (e) => {
     return;
   }
 
-  const senhaHash = await gerarHash(senha.value.trim());
+  let senhaHash;
+  try {
+    senhaHash = await gerarHash(senha.value.trim());
+  } catch (erro) {
+    console.error("Erro ao proteger a senha do usuário", erro);
+    mostrarMensagem(mensagemErro, "Não foi possível proteger a senha neste dispositivo.", 3000);
+    return;
+  }
 
   const novoUsuario = {
     nome: nome.value.trim(),
-    email: email.value.trim(),
+    email: email.value.trim().toLowerCase(),
     senha: senhaHash,
+    criadoEm: new Date().toISOString(),
   };
 
   const resultado = salvarUsuario(novoUsuario);
@@ -240,4 +249,3 @@ camposEmOrdem.forEach((campo, indice) => {
 
   });
 });
-

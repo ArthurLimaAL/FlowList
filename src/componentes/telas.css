@@ -1,0 +1,238 @@
+/* ESTILO COMPARTILHADO DAS TELAS (Tarefas, Calendário e Perfil)*/
+:root {
+    --bg: #0f111a;
+    --card: #1f2332;
+    --card-hover: #252a3d;
+    --border: rgba(255, 255, 255, 0.06);
+    --text: #e8eaf0;
+    --muted: #8b90a3;
+    --blue: #8bc4ff;
+    --blue-hover: #a3d2ff;
+
+    --fundo-pagina: #0a0b0f;
+    --fundo-conteudo: #15171f;
+
+    color-scheme: dark;
+}
+
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    background-color: var(--fundo-pagina);
+    color: var(--text);
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+    min-height: 100vh;
+    height: 100vh;
+    padding: 33px 5px 5px 5px;
+    margin: 0;
+    display: flex;
+    overflow: hidden;
+}
+
+
+/* CONTAINER PRINCIPAL (CARTÃO) */
+.cartao {
+    display: flex;
+    width: 100%;
+    height: calc(100vh - 38px);
+    border: 1px solid var(--borda);
+    border-radius: 8px;
+    overflow: hidden;
+    background-color: var(--fundo-conteudo);
+}
+
+
+/* CONTEÚDO PRINCIPAL (ÁREA DAS TELAS) */
+.conteudo {
+    flex: 1;
+    background-color: var(--fundo-conteudo);
+    overflow-y: auto;
+    height: 100%;
+    position: relative;
+}
+
+/* Scrollbar estilizada */
+.conteudo::-webkit-scrollbar {
+    width: 7px;
+}
+
+.conteudo::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.conteudo::-webkit-scrollbar-thumb {
+    background: #232736;
+    border-radius: 4px;
+}
+
+.conteudo::-webkit-scrollbar-thumb:hover {
+    background: #2e344a;
+}
+
+
+.tela-secao {
+    width: 100%;
+    animation: fadeInTela 0.18s ease-in-out;
+}
+
+@keyframes fadeInTela {
+    from {
+        opacity: 0;
+        transform: translateY(3px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/*  (botões, etiquetas de prioridade, lista vazia) */
+.btn-new {
+    background: var(--blue);
+    color: #0f111a;
+    border: none;
+    border-radius: 12px;
+    font-weight: 600;
+    padding: 9px 18px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: background-color 0.15s ease, transform 0.1s ease;
+}
+
+.btn-new:hover {
+    background: var(--blue-hover);
+}
+
+.btn-new:active {
+    transform: scale(0.98);
+}
+
+.check-circle {
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    border: 2px solid #3a3f57;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: transparent;
+    cursor: pointer;
+    flex-shrink: 0;
+    transition: all 0.12s ease;
+}
+
+.check-circle.done {
+    background: var(--blue);
+    border-color: var(--blue);
+    color: #0f111a;
+}
+
+.badge-prio {
+    font-size: 11px;
+    font-weight: 600;
+    padding: 4px 10px;
+    border-radius: 999px;
+    letter-spacing: .2px;
+}
+
+.badge-alta {
+    background: #3d222a;
+    color: #ff8a9b;
+}
+
+.badge-media {
+    background: #3a3320;
+    color: #ffce6b;
+}
+
+.badge-baixa {
+    background: #1f3328;
+    color: #6fdc8c;
+}
+
+.icon-btn {
+    width: 30px;
+    height: 30px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: transparent;
+    border: none;
+    color: #6a7088;
+    cursor: pointer;
+    transition: color 0.12s ease, background-color 0.12s ease;
+}
+
+.icon-btn:hover {
+    color: var(--text);
+    background: rgba(255, 255, 255, 0.05);
+}
+
+.empty-state {
+    padding: 64px 20px;
+    text-align: center;
+}
+
+.empty-state i {
+    font-size: 48px;
+    color: #2e344d;
+    display: block;
+    margin-bottom: 12px;
+}
+
+.modal-content {
+    background: #1e2232;
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    color: var(--text);
+}
+
+.form-control,
+.form-select {
+    background: #171a27;
+    border: 1px solid #2a2f44;
+    color: var(--text);
+    border-radius: 10px;
+}
+
+.form-control:focus,
+.form-select:focus {
+    background: #1a1e2d;
+    border-color: var(--blue);
+    color: var(--text);
+    box-shadow: 0 0 0 0.2rem rgba(139, 196, 255, 0.2);
+}
+
+.field-label {
+    display: block;
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--muted);
+    margin-bottom: 6px;
+    text-transform: uppercase;
+    letter-spacing: .4px;
+}
+
+.erro {
+    color: #ff8a9b;
+    font-size: 12.5px;
+    margin-top: 8px;
+}
+
+.chip-data {
+    font-size: 11.5px;
+    color: var(--muted);
+    white-space: nowrap;
+}
+
+.chip-data.atrasada {
+    color: #ff8a9b;
+    font-weight: 600;
+}
+

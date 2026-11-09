@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; style-src-attr 'unsafe-inline'; img-src 'self' data:; font-src 'self'; object-src 'none'; base-uri 'none'; form-action 'self'">
+    <title>Minhas tarefas | FlowList</title>
+
+    <!-- Bootstrap, ícones e fonte Inter locais -->
+    <link rel="stylesheet" href="../../node_modules/bootstrap/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="../../node_modules/bootstrap-icons/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="../../node_modules/@fontsource/inter/400.css">
+    <link rel="stylesheet" href="../../node_modules/@fontsource/inter/500.css">
+    <link rel="stylesheet" href="../../node_modules/@fontsource/inter/600.css">
+    <link rel="stylesheet" href="../../node_modules/@fontsource/inter/700.css">
+
+    <!-- Menu (compartilhado) e estilo das telas -->
+    <link rel="stylesheet" href="../componentes/menu.css">
+    <link rel="stylesheet" href="../componentes/telas.css">
+    <link rel="stylesheet" href="tarefas.css">
+</head>
+
+<body>
+
+    <!-- A barra do topo e o menu lateral são montados pelo menu -->
+    <div class="cartao">
+        <aside class="menu-lateral" id="menuLateral" data-ativo="tarefas"></aside>
+
+        <main class="conteudo">
+
+            <div class="container-tasks">
+                <header class="tasks-heading">
+                    <h2>Minhas tarefas</h2>
+                    <p>Organize seu dia, uma tarefa de cada vez.</p>
+                </header>
+
+                <div class="tasks-toolbar">
+                    <div id="contador" class="tasks-counts" aria-live="polite"></div>
+                    <div class="tasks-actions">
+                        <button type="button" class="btn-new btn-calendar" id="btnCalendario">
+                            <i class="bi bi-calendar3" aria-hidden="true"></i> Calendário
+                        </button>
+                        <button type="button" class="btn-new" id="btnNovaTarefa">
+                            <i class="bi bi-plus-lg" aria-hidden="true"></i> Nova tarefa
+                        </button>
+                    </div>
+                </div>
+
+                <nav class="filters" aria-label="Filtrar tarefas">
+                    <button type="button" class="btn btn-filter-inactive" id="f-todas" data-filtro="todas" aria-pressed="false">Todas</button>
+                    <button type="button" class="btn btn-filter-active" id="f-pendentes" data-filtro="pendentes" aria-pressed="true">Pendentes</button>
+                    <button type="button" class="btn btn-filter-inactive" id="f-atrasadas" data-filtro="atrasadas" aria-pressed="false">Atrasadas</button>
+                    <button type="button" class="btn btn-filter-inactive" id="f-concluidas" data-filtro="concluidas" aria-pressed="false">Concluídas</button>
+                </nav>
+
+                <p id="avisoTarefas" class="tasks-save-error" role="alert" hidden></p>
+                <div class="task-card" id="taskContainer"></div>
+                <footer class="tasks-progress">
+                    <span id="progressoTexto"></span>
+                    <progress id="progressoTarefas" max="1" value="0" aria-label="Progresso das tarefas"></progress>
+                </footer>
+            </div>
+        </main>
+    </div>
+
+    <!-- MINHAS TAREFAS -->
+    <div class="modal fade" id="taskModal" tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+            <div class="modal-content">
+                <div class="modal-header border-0">
+                    <h5 id="modalTitle" class="modal-title">Nova tarefa</h5>
+                    <button class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="duas-colunas">
+                        <div class="coluna-formulario">
+                            <label class="field-label" for="inputTitulo">Tarefa</label>
+                            <input id="inputTitulo" class="form-control mb-3" placeholder="Ex: Estudar capítulo 4" />
+                            <label class="field-label" for="inputPrioridade">Prioridade</label>
+                            <select id="inputPrioridade" class="form-select">
+                                <option>Alta</option>
+                                <option selected>Média</option>
+                                <option>Baixa</option>
+                            </select>
+                            <div class="nota-modal">
+                                <i class="bi bi-info-circle"></i> Sem dia marcado, a tarefa fica na lista sem
+                                agendamento.
+                            </div>
+                        </div>
+
+                        <div class="coluna-calendario">
+                            <div class="field-label">Dia</div>
+                            <div class="mini-cal">
+                                <div class="mini-cabecalho">
+                                    <div>
+                                        <div class="mini-titulo" id="miniTitulo">—</div>
+                                        <div class="mini-leitura" id="textoData">Sem dia marcado</div>
+                                    </div>
+                                    <div class="d-flex gap-1">
+                                        <button type="button" class="mini-nav" id="miniPrev" aria-label="Mês anterior">
+                                            <i class="bi bi-chevron-left"></i>
+                                        </button>
+                                        <button type="button" class="mini-nav" id="miniNext" aria-label="Próximo mês">
+                                            <i class="bi bi-chevron-right"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                                <div class="mini-semana" id="miniDiasSemana"></div>
+                                <div class="mini-grade" id="miniGrade"></div>
+                                <div class="mini-atalhos">
+                                    <button type="button" class="chip" data-atalho="hoje">Hoje</button>
+                                    <button type="button" class="chip" data-atalho="amanha">Amanhã</button>
+                                    <button type="button" class="chip" data-atalho="semana">+7 dias</button>
+                                    <button type="button" class="chip chip-limpar" id="miniSemData">Nenhum</button>
+                                </div>
+                            </div>
+                            <div class="mini-legenda">
+                                <span><i class="bi bi-lock-fill"></i> passado bloqueado</span>
+                                <span><span class="mini-marca-legenda"></span> dia ocupado</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="erro" id="erroTarefa"></div>
+                </div>
+                <div class="modal-footer border-0">
+                    <button class="btn btn-cancel-task" data-bs-dismiss="modal">
+                        Cancelar
+                    </button>
+                    <button class="btn px-4 btn-save-task" id="btnSaveTask">
+                        Salvar
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- SCRIPTS -->
+    <script src="../../node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="../storage.js"></script>
+    <script src="../componentes/menu.js"></script>
+    <script src="../componentes/datas.js"></script>
+    <script src="../componentes/minicalendario.js"></script>
+    <script src="../componentes/navegacao.js"></script>
+    <script src="tarefas.js"></script>
+</body>
+
+</html>

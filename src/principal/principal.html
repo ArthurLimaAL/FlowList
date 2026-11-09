@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+  <meta charset="UTF-8">
+
+  <!-- Segurança (CSP): a página só carrega arquivos do próprio app -->
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; style-src-attr 'unsafe-inline'; img-src 'self' data:; font-src 'self'; object-src 'none'; base-uri 'none'; form-action 'self'">
+
+  <title>Início | FlowList</title>
+
+  <!-- Bootstrap e fonte Inter locais  -->
+  <link rel="stylesheet" href="../../node_modules/bootstrap/dist/css/bootstrap.min.css">
+  <link rel="stylesheet" href="../../node_modules/@fontsource/inter/400.css">
+  <link rel="stylesheet" href="../../node_modules/@fontsource/inter/600.css">
+  <link rel="stylesheet" href="../../node_modules/@fontsource/inter/700.css">
+
+  <!-- Menu e barra do topo (compartilhados) -->
+  <link rel="stylesheet" href="../componentes/menu.css">
+
+  <link rel="stylesheet" href="principal.css">
+</head>
+
+<body>
+
+  <!-- A barra do topo e o menu lateral são montados pelo menu -->
+  <div class="cartao">
+    <aside class="menu-lateral" id="menuLateral" data-ativo="inicio"></aside>
+
+    <main class="conteudo">
+
+      <header>
+        <h1 class="titulo-boas-vindas">Boas-vindas, <span id="nomeUsuario"></span></h1>
+        <p class="subtitulo-boas-vindas">Vamos deixar tudo pronto em poucos passos.</p>
+      </header>
+
+      <!-- aparece quando o usuário ainda não tem nenhuma tarefa -->
+      <section id="estadoVazio" class="cartao-vazio">
+
+        <span class="cartao-vazio-icone">
+          <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+               stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"></path>
+            <rect x="8" y="2" width="8" height="4" rx="1" ry="1"></rect>
+          </svg>
+        </span>
+
+        <h2 class="cartao-vazio-titulo">Crie sua primeira tarefa</h2>
+        <p class="cartao-vazio-texto">
+          Anote o que precisa fazer, escolha um prazo e a prioridade.<br>
+          O FlowList cuida do resto.
+        </p>
+
+        <form id="formTarefa" class="form-tarefa" novalidate>
+
+          <div class="form-tarefa-campo">
+            <span class="form-tarefa-circulo" aria-hidden="true"></span>
+            <input id="campoTarefa" type="text" class="form-tarefa-input"
+                   placeholder="Ex.: Entregar relatório de Física"
+                   aria-label="Nome da tarefa" autocomplete="off">
+          </div>
+
+          <div class="form-tarefa-opcoes">
+
+            <div class="prazo-area">
+              <button type="button" id="botaoPrazo" class="botao-prazo">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                     stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+                  <line x1="16" y1="2" x2="16" y2="6"></line>
+                  <line x1="8" y1="2" x2="8" y2="6"></line>
+                  <line x1="3" y1="10" x2="21" y2="10"></line>
+                </svg>
+                <span id="textoPrazo">Prazo</span>
+              </button>
+
+              <input type="date" id="campoPrazo" class="prazo-data"
+                     aria-label="Prazo da tarefa" tabindex="-1">
+            </div>
+
+            <input type="radio" name="prioridade" id="prioAlta" value="alta" class="prioridade-radio">
+            <label for="prioAlta" class="prioridade prioridade-alta">Alta</label>
+
+            <input type="radio" name="prioridade" id="prioMedia" value="media" class="prioridade-radio">
+            <label for="prioMedia" class="prioridade prioridade-media">Média</label>
+
+            <input type="radio" name="prioridade" id="prioBaixa" value="baixa" class="prioridade-radio">
+            <label for="prioBaixa" class="prioridade prioridade-baixa">Baixa</label>
+
+          </div>
+
+          <p id="mensagemTarefa" class="mensagem-tarefa" role="status"></p>
+
+          <button type="submit" class="botao-criar">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                 stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <line x1="12" y1="5" x2="12" y2="19"></line>
+              <line x1="5" y1="12" x2="19" y2="12"></line>
+            </svg>
+            <span id="textoBotaoCriar">Criar primeira tarefa</span>
+          </button>
+
+        </form>
+
+      </section>
+
+      <section id="areaTarefas" class="area-tarefas" hidden>
+
+        <div id="slotFormulario"></div>
+
+        <div id="blocoAtrasadas" hidden>
+          <h2 class="lista-titulo lista-titulo-atrasadas">Atrasadas</h2>
+          <ul id="listaAtrasadas" class="lista-tarefas"></ul>
+        </div>
+
+        <div>
+          <h2 class="lista-titulo">Para hoje</h2>
+          <ul id="listaHoje" class="lista-tarefas"></ul>
+          <p id="semTarefasHoje" class="sem-tarefas" hidden>Nada para hoje por aqui.</p>
+        </div>
+
+      </section>
+
+    </main>
+  </div>
+
+  <template id="modeloTarefa">
+    <li class="tarefa-item">
+      <button type="button" class="tarefa-check">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+             stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <polyline points="20 6 9 17 4 12"></polyline>
+        </svg>
+      </button>
+      <span class="tarefa-titulo"></span>
+      <span class="etiqueta"></span>
+      <span class="tarefa-prazo"></span>
+    </li>
+  </template>
+
+  <script src="../storage.js"></script>
+  <script src="../componentes/menu.js"></script>
+  <script src="principal.js"></script>
+</body>
+
+</html>

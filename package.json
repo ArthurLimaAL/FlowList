@@ -1,21 +1,29 @@
 {
-  "name": "flowlist",
+  "name": "desktop-tutorial",
   "version": "1.0.0",
-  "description": "Aplicativo desktop para organizar tarefas pessoais.",
-  "private": true,
+  "description": "This is your README. READMEs are where you can communicate what your project is and how to use it.",
   "main": "main.js",
   "scripts": {
-    "start": "electron .",
-    "check": "node --check main.js && node --check preload.js && node --check src/scripts/storage.js && node --check src/pages/cadastro/cadastro.js && node --check src/pages/login/login.js && node --check src/pages/principal/principal.js",
-    "test": "npm run check"
+    "start": "electron ."
   },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Karollayne802/desktop-tutorial.git"
+  },
+  "keywords": [],
+  "author": "",
   "license": "ISC",
-  "dependencies": {
-    "@fontsource/inter": "^5.2.6",
-    "bootstrap": "^5.3.8",
-    "bootstrap-icons": "^1.13.2"
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/Karollayne802/desktop-tutorial/issues"
   },
+  "homepage": "https://github.com/Karollayne802/desktop-tutorial#readme",
   "devDependencies": {
     "electron": "^45.2.3"
+  },
+  "dependencies": {
+    "@fontsource/inter": "^5.3.0",
+    "bootstrap": "^5.3.8",
+    "bootstrap-icons": "^1.13.2"
   }
 }

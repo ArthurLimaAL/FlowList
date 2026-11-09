@@ -1,25 +1,6 @@
 # FlowList
 
-Aplicativo desktop de organização de tarefas, feito com Electron, HTML, CSS e JavaScript.
-
-## Requisitos
-
-- Node.js e npm
-
-## Instalação e execução
-
-Na pasta do projeto, instale as dependências e inicie o aplicativo:
-
-```bash
-npm install
-npm start
-```
-
-Para verificar a sintaxe dos scripts JavaScript:
-
-```bash
-npm test
-```
+Aplicativo desktop feito com Electron para organizar tarefas, calendário e perfil.
 
 ## Fluxo do aplicativo
 
@@ -27,25 +8,27 @@ npm test
 2. Após o cadastro, o usuário é encaminhado ao **Login**.
 3. Um login válido abre a tela **Principal**; se não houver sessão, a tela principal encaminha de volta ao login.
 
-Os dados de usuários, sessão e tarefas são armazenados localmente no `localStorage` do aplicativo.
+# Fluxograma
+![alt text](fluxograma.png)
 
-## Estrutura
+## Armazenamento e senhas
 
-```text
-assets/images/                 Ícone do aplicativo
-src/
-  pages/
-    cadastro/                   Página e lógica de cadastro
-    login/                      Página e lógica de login
-    principal/                  Tela principal e tarefas
-  scripts/storage.js            Persistência local de usuários e tarefas
-  styles/auth.css               Estilos compartilhados por cadastro e login
-main.js                         Inicialização do Electron
-preload.js                      Ponte segura (contextBridge) entre Electron e o navegador
-package.json                    Dependências e comandos únicos do projeto
+Os dados da conta e das tarefas ficam no `localStorage` do aplicativo. As senhas novas são armazenadas com PBKDF2-SHA-256, salt aleatório e 310.000 iterações. Contas criadas com a versão anterior são atualizadas para esse formato no próximo login bem-sucedido.
+
+Como o armazenamento é local, esta é uma proteção para um aplicativo didático, não um sistema de autenticação para dados sensíveis: alguém com acesso ao dispositivo e ao perfil local do aplicativo ainda pode inspecionar ou alterar os dados.
+
+## Executar
+
+```bash
+npm install
+npm start
 ```
 
-## Créditos
+## Requisitos
+
+- Node.js e npm
+
+## Alunos
 
 - Arthur Lima
 - Karollayne Correia

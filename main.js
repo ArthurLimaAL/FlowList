@@ -1,120 +1,112 @@
-const { app, BrowserWindow, ipcMain, dialog, Notification } = require("electron");
-const path = require("node:path");
+const { app, BrowserWindow, ipcMain } = require("electron");
+const path = require("path");
+const fs = require("fs");
+const { fileURLToPath } = require("url");
 
-function registrarHandlersIpc() {
-  // Informações da aplicação
-  ipcMain.handle("app:obter-versao", () => app.getVersion());
-  ipcMain.handle("app:obter-plataforma", () => process.platform);
-
-  // Controle da janela
-  ipcMain.on("janela:minimizar", (evento) => {
-    const win = BrowserWindow.fromWebContents(evento.sender);
-    if (win) win.minimize();
-  });
-
-  ipcMain.on("janela:maximizar", (evento) => {
-    const win = BrowserWindow.fromWebContents(evento.sender);
-    if (win) {
-      if (win.isMaximized()) {
-        win.unmaximize();
-      } else {
-        win.maximize();
-      }
-    }
-  });
-
-  ipcMain.on("janela:fechar", (evento) => {
-    const win = BrowserWindow.fromWebContents(evento.sender);
-    if (win) win.close();
-  });
-
-  ipcMain.handle("janela:esta-maximizada", (evento) => {
-    const win = BrowserWindow.fromWebContents(evento.sender);
-    return win ? win.isMaximized() : false;
-  });
-
-  // Diálogos nativos
-  ipcMain.handle("dialogo:confirmar", async (evento, opcoes = {}) => {
-    const win = BrowserWindow.fromWebContents(evento.sender);
-    const config = {
-      type: "question",
-      buttons: [opcoes.textoCancelar || "Cancelar", opcoes.textoConfirmar || "Confirmar"],
-      defaultId: 1,
-      cancelId: 0,
-      title: opcoes.titulo || "FlowList",
-      message: opcoes.mensagem || "",
-    };
-
-    const resultado = win ? await dialog.showMessageBox(win, config) : await dialog.showMessageBox(config);
-    return resultado.response === 1;
-  });
-
-  ipcMain.handle("dialogo:alerta", async (evento, opcoes = {}) => {
-    const win = BrowserWindow.fromWebContents(evento.sender);
-    const config = {
-      type: opcoes.tipo || "info",
-      buttons: ["OK"],
-      title: opcoes.titulo || "FlowList",
-      message: opcoes.mensagem || "",
-    };
-
-    if (win) {
-      await dialog.showMessageBox(win, config);
-    } else {
-      await dialog.showMessageBox(config);
-    }
-    return true;
-  });
-
-  // Notificações desktop
-  ipcMain.handle("notificacao:exibir", (evento, { titulo, corpo } = {}) => {
-    if (Notification.isSupported()) {
-      new Notification({
-        title: titulo || "FlowList",
-        body: corpo || "",
-        icon: path.join(__dirname, "assets", "images", "flowlist-icon.png"),
-      }).show();
-      return true;
-    }
-    return false;
-  });
+function normalizarCaminho(caminho) {
+  const resolvido = path.resolve(caminho);
+  return process.platform === "win32" ? resolvido.toLowerCase() : resolvido;
 }
 
-function criarJanelaPrincipal() {
+const telasPermitidas = new Set(
+  [
+    "login/login.html",
+    "cadastro/cadastro.html",
+    "principal/principal.html",
+    "tarefas/tarefas.html",
+    "calendario/calendario.html",
+    "perfil/perfil.html"
+  ].map((tela) => normalizarCaminho(path.resolve(__dirname, "src", tela)))
+);
+
+function urlDaTelaPermitida(url) {
+  try {
+    return telasPermitidas.has(normalizarCaminho(fileURLToPath(url)));
+  } catch {
+    return false;
+  }
+}
+
+function validarOrigemIPC(evento) {
+  const quadro = evento.senderFrame;
+  if (
+    !quadro ||
+    quadro !== evento.sender.mainFrame ||
+    !urlDaTelaPermitida(quadro.url)
+  ) {
+    throw new Error("Origem IPC não autorizada.");
+  }
+}
+
+function criarJanela() {
   const janela = new BrowserWindow({
-    title: "FlowList",
     width: 1100,
     height: 720,
     minWidth: 900,
     minHeight: 600,
+    backgroundColor: "#0a0b0f",
+    icon: path.join(__dirname, "src", "imagens", "icon.png"),
     autoHideMenuBar: true,
-    icon: path.join(__dirname, "assets", "images", "flowlist-icon.png"),
-    webPreferences: {
-      preload: path.join(__dirname, "preload.js"),
-      contextIsolation: true,
-      nodeIntegration: false,
-      sandbox: true,
+
+    // Esconde a barra de título nativa.
+    titleBarStyle: "hidden",
+    titleBarOverlay: {
+      color: "#232733",
+      symbolColor: "#ffffff",
+      height: 32
     },
+
+    webPreferences: {
+      preload: path.join(__dirname, "src", "preload", "preload.js"), 
+      contextIsolation: true,   
+      nodeIntegration: false,   
+      sandbox: true             
+    }
   });
 
+  // Impede janelas adicionais e navegação para páginas fora do app.
   janela.webContents.setWindowOpenHandler(() => ({ action: "deny" }));
-  janela.webContents.on("will-navigate", (evento, destino) => {
-    if (!destino.startsWith("file://")) evento.preventDefault();
-  });
+  const bloquearNavegacaoExterna = (evento, url) => {
+    if (!urlDaTelaPermitida(url)) evento.preventDefault();
+  };
+  janela.webContents.on("will-navigate", bloquearNavegacaoExterna);
+  janela.webContents.on("will-redirect", bloquearNavegacaoExterna);
 
-  // O fluxo começa no cadastro; dali o usuário pode ir ao login e, após autenticar, à tela principal.
-  janela.loadFile(path.join(__dirname, "src", "pages", "cadastro", "index.html"));
+  janela.loadFile(path.join(__dirname, "src", "login", "login.html"));
 }
 
-app.whenReady().then(() => {
-  registrarHandlersIpc();
-  criarJanelaPrincipal();
-
-  app.on("activate", () => {
-    if (BrowserWindow.getAllWindows().length === 0) criarJanelaPrincipal();
-  });
+// Devolve a versão do app
+ipcMain.handle("app:versao", (evento) => {
+  validarOrigemIPC(evento);
+  return app.getVersion();
 });
 
+// Devolve o HTML do menu lateral 
+ipcMain.handle("menu:html", (evento) => {
+  validarOrigemIPC(evento);
+  return fs.readFileSync(path.join(__dirname, "src", "componentes", "menu.html"), "utf8");
+});
+
+// Fecha o aplicativo inteiro
+ipcMain.handle("app:fechar", (evento) => {
+  validarOrigemIPC(evento);
+  app.quit();
+});
+
+// Quando o Electron terminar de iniciar, abre a janela
+app.whenReady().then(() => {
+  
+  if (process.platform === "darwin") {
+    app.dock.setIcon(path.join(__dirname, "src", "imagens", "icon.png"));
+  }
+  criarJanela();
+});
+
+// Fecha o app quando todas as janelas forem fechadas
 app.on("window-all-closed", () => {
   if (process.platform !== "darwin") app.quit();
+});
+
+app.on("activate", () => {
+  if (BrowserWindow.getAllWindows().length === 0) criarJanela();
 });

@@ -8,16 +8,16 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/Karollayne802/desktop-tutorial.git"
+    "url": " "
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "type": "commonjs",
   "bugs": {
-    "url": "https://github.com/Karollayne802/desktop-tutorial/issues"
+    "url": " "
   },
-  "homepage": "https://github.com/Karollayne802/desktop-tutorial#readme",
+  "homepage": " ",
   "devDependencies": {
     "electron": "^45.2.3"
   },
